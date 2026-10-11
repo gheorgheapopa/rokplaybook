@@ -1,0 +1,1580 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Rise of Kingdoms free-to-play alliance playbook: accounts, City Hall guide, commanders, gems, events and conquest strategy.">
+<title>RoK F2P Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap">
+<style>
+/* Layout: game-UI handbook. Fixed left command panel (chapters + sections), scrolling content column of gold-trimmed navy panels. One committed dark look, like the in-game interface. */
+:root{
+  --night:#070D18; --navy:#0D1A2E; --panel:#122239; --panel2:#18304D; --edge:#2A4669;
+  --gold:#E4B95B; --gold-hi:#FFE3A1; --gold-lo:#9C7428; --ink:#EAF0F7; --mute:#A3B4C8; --dim:#7389A3;
+  --legend:#F3A53C; --epic:#B985F0; --elite:#58A9EC; --adv:#73C873; --red:#E8705A;
+  --display:'Cinzel', 'Trajan Pro', Georgia, serif;
+  --body:'Alegreya Sans', 'Segoe UI', Arial, sans-serif;
+  --side:290px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:24px}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{
+  margin:0; color:var(--ink); font-family:var(--body); font-size:18px; line-height:1.6;
+  background:
+    radial-gradient(1200px 600px at 75% -10%, rgba(228,185,91,.10), transparent 60%),
+    radial-gradient(900px 700px at 10% 110%, rgba(88,169,236,.08), transparent 60%),
+    var(--night);
+  background-attachment:fixed;
+}
+a{color:var(--gold-hi)}
+:focus-visible{outline:2px solid var(--gold); outline-offset:3px; border-radius:4px}
+
+/* ---------- Sidebar ---------- */
+.side{
+  position:fixed; inset:0 auto 0 0; width:var(--side); z-index:30;
+  padding-top:env(safe-area-inset-top,0px);
+  background:linear-gradient(180deg, #0F1F36 0%, #0A1527 100%);
+  border-right:1px solid var(--edge);
+  box-shadow:inset -1px 0 0 rgba(228,185,91,.25), 8px 0 30px rgba(0,0,0,.35);
+  display:flex; flex-direction:column;
+}
+.crest{padding:22px 20px 16px; text-align:center; border-bottom:1px solid var(--edge); position:relative}
+.crest svg{width:64px; height:auto; display:block; margin:0 auto 8px}
+.crest .name{font-family:var(--display); font-weight:800; font-size:17px; letter-spacing:.12em; color:var(--gold)}
+.crest .sub{font-size:13px; color:var(--mute); letter-spacing:.06em}
+.navscroll{overflow-y:auto; flex:1; padding:12px 10px 24px; scrollbar-width:thin; scrollbar-color:var(--edge) transparent}
+.navch{margin-bottom:4px}
+.navch > a{
+  display:flex; align-items:center; gap:12px; padding:9px 10px; border-radius:10px;
+  text-decoration:none; color:var(--ink); font-family:var(--display); font-weight:700; font-size:14.5px; letter-spacing:.04em;
+  border:1px solid transparent;
+}
+.navch > a .med{
+  flex:none; width:30px; height:30px; border-radius:50%; display:grid; place-items:center;
+  font-size:13px; color:var(--night); background:radial-gradient(circle at 35% 30%, var(--gold-hi), var(--gold) 55%, var(--gold-lo));
+  box-shadow:0 0 0 2px #0A1527, 0 0 0 3px var(--gold-lo);
+}
+.navch > a:hover{background:rgba(228,185,91,.06); border-color:rgba(228,185,91,.18)}
+.navch.on > a{background:linear-gradient(90deg, rgba(228,185,91,.18), rgba(228,185,91,.03)); border-color:rgba(228,185,91,.4); color:var(--gold-hi)}
+.navsub{list-style:none; margin:2px 0 8px 52px; padding:0; display:none}
+.navch.on .navsub{display:block}
+.navsub a{display:block; padding:3px 8px; font-size:15px; color:var(--mute); text-decoration:none; border-left:1px solid var(--edge)}
+.navsub a:hover, .navsub a.on{color:var(--gold-hi); border-left-color:var(--gold)}
+.sidefoot{padding:12px 16px; border-top:1px solid var(--edge); font-size:13px; color:var(--dim)}
+
+/* Mobile top bar */
+.topbar{display:none}
+.scrim{display:none}
+
+/* ---------- Content ---------- */
+.content{margin-left:var(--side); padding-inline:40px; padding-block:0 80px}
+.wrap{max-width:940px; margin:0 auto}
+
+/* Hero */
+.hero{padding-block:72px 48px; text-align:center; position:relative}
+.hero .kicker{font-family:var(--display); font-weight:600; font-size:14px; letter-spacing:.32em; color:var(--gold); text-transform:uppercase}
+.hero h1{
+  font-family:var(--display); font-weight:800; font-size:clamp(36px,5.4vw,66px); line-height:1.05; margin:14px 0 10px; text-wrap:balance;
+  background:linear-gradient(180deg, var(--gold-hi) 0%, var(--gold) 55%, var(--gold-lo) 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  text-shadow:0 2px 24px rgba(228,185,91,.15);
+}
+.hero p{max-width:40em; margin:0 auto; color:var(--mute); font-size:20px}
+.orn{display:flex; align-items:center; justify-content:center; gap:14px; margin:22px auto; max-width:420px}
+.orn::before,.orn::after{content:""; flex:1; height:1px; background:linear-gradient(90deg, transparent, var(--gold))}
+.orn::after{background:linear-gradient(90deg, var(--gold), transparent)}
+.orn i{width:10px; height:10px; transform:rotate(45deg); background:var(--gold); box-shadow:0 0 0 3px var(--night), 0 0 0 4px var(--gold-lo)}
+.pillars{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-top:34px}
+.pillar{padding:14px 10px; border:1px solid var(--edge); border-radius:12px; background:rgba(18,34,57,.7)}
+.pillar b{display:block; font-family:var(--display); font-size:24px; color:var(--gold-hi); font-variant-numeric:tabular-nums}
+.pillar span{font-size:14px; color:var(--mute)}
+
+/* Chapter */
+.ch{padding-block:44px 8px}
+.banner{
+  position:relative; display:flex; align-items:center; gap:18px; padding:20px 24px;
+  background:linear-gradient(100deg, #17304F 0%, #10233C 60%, #0D1C31 100%);
+  border:1px solid var(--gold-lo); border-radius:14px;
+  box-shadow:inset 0 0 0 1px rgba(255,227,161,.08), 0 12px 30px rgba(0,0,0,.35);
+  margin-bottom:24px;
+}
+.banner::before,.banner::after{content:""; position:absolute; width:18px; height:18px; border:2px solid var(--gold)}
+.banner::before{top:-5px; left:-5px; border-right:none; border-bottom:none}
+.banner::after{bottom:-5px; right:-5px; border-left:none; border-top:none}
+.banner .seal{
+  flex:none; width:58px; height:58px; border-radius:50%; display:grid; place-items:center;
+  font-family:var(--display); font-weight:800; font-size:24px; color:var(--night);
+  background:radial-gradient(circle at 35% 30%, var(--gold-hi), var(--gold) 55%, var(--gold-lo));
+  box-shadow:0 0 0 3px #10233C, 0 0 0 4px var(--gold);
+}
+.banner h2{font-family:var(--display); font-weight:800; font-size:clamp(24px,3.4vw,34px); line-height:1.1; margin:0 0 4px; color:var(--gold-hi); letter-spacing:.03em; text-wrap:balance}
+.banner p{margin:0; color:var(--mute); font-size:17px}
+.banner > div{min-width:0}
+
+h3{
+  font-family:var(--display); font-weight:700; font-size:20px; letter-spacing:.06em; color:var(--gold);
+  margin:34px 0 14px; display:flex; align-items:center; gap:12px; text-wrap:balance;
+}
+h3::after{content:""; flex:1; height:1px; background:linear-gradient(90deg, var(--gold-lo), transparent)}
+h4{font-family:var(--display); font-weight:700; font-size:17px; margin:0 0 6px; letter-spacing:.03em; color:var(--ink)}
+p{margin:0 0 12px}
+ul,ol{margin:0 0 12px; padding-left:1.25em}
+li{margin-bottom:5px}
+li::marker{color:var(--gold)}
+b{color:#FFFFFF; font-weight:700}
+.mute{color:var(--mute)}
+.small{font-size:15px; color:var(--mute)}
+
+.grid{display:grid; gap:14px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.grid > *{min-width:0}
+
+.panel{
+  background:linear-gradient(180deg, var(--panel2) 0%, var(--panel) 100%);
+  border:1px solid var(--edge); border-radius:12px; padding:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+.panel > :last-child{margin-bottom:0}
+.panel .lbl{font-family:var(--display); font-weight:700; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); margin-bottom:8px}
+
+/* Tables styled like in-game lists */
+.tbl{overflow-x:auto; border:1px solid var(--edge); border-radius:12px; margin-bottom:14px; background:var(--panel)}
+table{border-collapse:collapse; width:100%; font-size:16.5px; min-width:560px}
+th,td{text-align:left; padding:11px 14px; vertical-align:top; border-bottom:1px solid rgba(42,70,105,.7)}
+th{font-family:var(--display); font-weight:700; font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); background:#0F1F35}
+tr:nth-child(even) td{background:rgba(24,48,77,.35)}
+tr:last-child td{border-bottom:none}
+.n{font-variant-numeric:tabular-nums; white-space:nowrap}
+
+/* Rarity chips + commander cards */
+.r{display:inline-block; font-family:var(--display); font-weight:700; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; padding:2px 8px; border-radius:5px; border:1px solid currentColor; vertical-align:2px; white-space:nowrap}
+.r.L{color:var(--legend)} .r.E{color:var(--epic)} .r.El{color:var(--elite)} .r.A{color:var(--adv)}
+.troop{display:inline-block; font-size:11.5px; font-weight:800; letter-spacing:.1em; padding:2px 7px; border-radius:5px; background:#0A1527; color:var(--mute); border:1px solid var(--edge); vertical-align:2px}
+
+.cmd{
+  position:relative; padding:16px 16px 14px; border-radius:12px; overflow:hidden;
+  background:linear-gradient(160deg, color-mix(in srgb, var(--rc) 22%, #122239) 0%, #122239 55%);
+  border:1px solid color-mix(in srgb, var(--rc) 55%, transparent);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.03), 0 6px 18px rgba(0,0,0,.3);
+}
+.cmd::before{content:""; position:absolute; inset:0 0 auto 0; height:3px; background:var(--rc)}
+.cmd.L{--rc:var(--legend)} .cmd.E{--rc:var(--epic)} .cmd.El{--rc:var(--elite)}
+.cmd .top{display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:6px}
+.cmd h4{font-size:18px; margin:0; color:#fff}
+.cmd .role{font-size:15px; color:var(--mute); margin:0 0 8px}
+.cmd .meta{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px}
+.cmd p{font-size:15.5px; margin:0}
+
+/* Tier badges */
+.tier{display:inline-grid; place-items:center; width:30px; height:30px; border-radius:8px; font-family:var(--display); font-weight:800; font-size:15px}
+.tier.S{background:linear-gradient(180deg,#FFD97A,#D99A2B); color:#2A1600}
+.tier.A{background:linear-gradient(180deg,#C9A2F7,#8B55D1); color:#1C0A33}
+.tier.B{background:linear-gradient(180deg,#8CC6F5,#3B82C4); color:#06182B}
+.tier.D{background:#22374F; color:var(--mute); font-size:11px; width:auto; padding:0 8px}
+
+/* Numbered rule list */
+.rules{counter-reset:r; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 18px}
+.rules div{counter-increment:r; display:flex; gap:12px; align-items:baseline; padding:10px 12px; border-radius:10px; background:rgba(18,34,57,.7); border:1px solid var(--edge)}
+.rules div::before{content:counter(r, decimal-leading-zero); font-family:var(--display); font-weight:800; color:var(--gold); flex:none; width:1.8em}
+
+/* Stage strip */
+.stages{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px}
+.stage{padding:16px; border-radius:12px; background:linear-gradient(180deg,#16304F,#112640); border:1px solid var(--edge); position:relative}
+.stage .when{font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--dim); font-weight:700}
+.stage h4{color:var(--gold-hi); margin:4px 0 8px; font-size:17px}
+.stage ul{font-size:15.5px; margin:0; padding-left:1.1em}
+
+/* Treasury (spending) */
+details.treasury{margin-top:26px; border-radius:12px; border:1px solid var(--gold-lo); background:linear-gradient(180deg, rgba(228,185,91,.10), rgba(228,185,91,.03))}
+details.treasury summary{cursor:pointer; list-style:none; display:flex; align-items:center; gap:12px; padding:14px 18px; font-family:var(--display); font-weight:700; letter-spacing:.06em; color:var(--gold-hi)}
+details.treasury summary::-webkit-details-marker{display:none}
+.coin{flex:none; width:30px; height:30px; border-radius:50%; display:grid; place-items:center; font-size:14px; color:#2A1600; font-weight:800; background:radial-gradient(circle at 35% 30%, #FFF0C2, var(--gold) 55%, var(--gold-lo)); box-shadow:0 0 0 2px rgba(0,0,0,.4)}
+details.treasury summary .chev{margin-left:auto; transition:transform .2s; color:var(--gold)}
+details.treasury[open] summary .chev{transform:rotate(90deg)}
+details.treasury .body{padding:0 18px 16px}
+
+button{font:inherit; font-size:15px; color:var(--gold-hi); background:#10233C; border:1px solid var(--gold-lo); border-radius:999px; padding:7px 16px; cursor:pointer}
+button:hover{background:#17304F}
+.ctl{display:flex; justify-content:flex-end; gap:8px; margin-top:14px; flex-wrap:wrap}
+
+/* Checklist */
+.check{display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px dashed var(--edge); cursor:pointer; font-size:16.5px}
+.check:last-child{border-bottom:none}
+.check input{width:18px; height:18px; margin-top:4px; accent-color:var(--gold); flex:none}
+.check input:checked + span{color:var(--dim); text-decoration:line-through}
+
+/* Discord channel list */
+.chan{font-size:15.5px; color:var(--mute); line-height:1.9}
+.chan span{color:var(--ink)}
+
+footer{margin-top:60px; padding-top:18px; border-top:1px solid var(--edge); font-size:14px; color:var(--dim)}
+footer a{color:var(--mute)}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1100px){
+  .g4,.stages,.pillars{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  .side{transform:translateX(-100%); transition:transform .25s ease; width:min(86vw,var(--side))}
+  body.navopen .side{transform:none}
+  .scrim{display:block; position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:25; opacity:0; pointer-events:none; transition:opacity .25s}
+  body.navopen .scrim{opacity:1; pointer-events:auto}
+  .topbar{
+    display:flex; align-items:center; gap:12px; position:sticky; top:env(safe-area-inset-top,0px); z-index:20;
+    margin-inline:-16px; padding:10px 16px; background:rgba(10,21,39,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--edge)
+  }
+  .topbar .t{font-family:var(--display); font-weight:800; letter-spacing:.1em; color:var(--gold); font-size:15px; flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .content{margin-left:0; padding-inline:16px}
+  .g3,.g2{grid-template-columns:1fr}
+  .rules{grid-template-columns:1fr}
+  .hero{padding-block:36px 28px}
+  html{scroll-padding-top:70px}
+}
+@media (max-width:560px){
+  body{font-size:17px}
+  .g4,.stages,.pillars{grid-template-columns:1fr 1fr}
+  .stages{grid-template-columns:1fr}
+  .banner{padding:16px; gap:14px}
+  .banner .seal{width:46px; height:46px; font-size:19px}
+}
+</style>
+<style>
+/* Simple reading layout: navy-black, white text, one muted gold accent. Flat surfaces, no effects. */
+:root{
+  --night:#0E141C; --navy:#121A25; --panel:#151E2A; --panel2:#151E2A; --edge:#243042;
+  --gold:#C9A35A; --gold-hi:#E3C688; --gold-lo:#8E733F; --ink:#E9EDF2; --mute:#A7B1BE; --dim:#7D8899;
+  --legend:#E8A03E; --epic:#A98BE0; --elite:#5FA4DD;
+}
+body{background:var(--night); font-size:18px; line-height:1.7}
+b{color:#FFFFFF}
+a{color:var(--gold-hi)}
+.wrap{max-width:860px}
+.content{padding-inline:48px}
+
+/* Sidebar */
+.side{background:var(--navy); border-right:1px solid var(--edge); box-shadow:none}
+.crest{border-bottom:1px solid var(--edge); padding:20px}
+.crest svg{width:44px}
+.crest .name{color:var(--gold); font-size:15px; background:none}
+.navscroll{padding:10px 8px 20px}
+.navch > a{font-family:var(--body); font-size:15.5px; font-weight:700; letter-spacing:0; text-transform:none; border:none; border-left:3px solid transparent; border-radius:0; padding:9px 12px; color:var(--ink); background:none}
+.navch > a .med{background:none; box-shadow:none; border:none; transform:none; width:auto; height:auto; color:var(--dim); font-family:var(--body); font-size:14px; font-weight:700}
+.navch > a:hover{background:rgba(255,255,255,.03); border-left-color:var(--edge)}
+.navch.on > a{background:rgba(201,163,90,.08); border-left-color:var(--gold); color:var(--gold-hi)}
+.navch.on > a .med{color:var(--gold); background:none}
+.navsub{margin:2px 0 8px 30px}
+.navsub a{font-size:14.5px; border-left:1px solid var(--edge)}
+.sidefoot{border-top:1px solid var(--edge)}
+
+/* Hero */
+.hero{text-align:left; padding-block:64px 36px; border-bottom:1px solid var(--edge)}
+.hero .kicker{font-family:var(--body); font-weight:700; font-size:14px; letter-spacing:.14em; color:var(--gold)}
+.hero h1{font-size:clamp(34px,5vw,54px); line-height:1.1; margin:10px 0 14px; color:#FFFFFF; background:none; text-shadow:none}
+.hero p{margin:0; font-size:19px; max-width:38em}
+.orn{display:none}
+.pillars{grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-top:28px}
+.pillar{background:var(--panel); border:1px solid var(--edge); border-radius:8px; padding:12px 14px}
+.pillar b{font-family:var(--body); font-size:22px; color:var(--gold-hi)}
+.pillar span{font-size:14px}
+
+/* Chapter headings */
+.ch{padding-block:56px 6px}
+.banner{display:block; background:none; border:none; box-shadow:none; border-radius:0; padding:0; margin-bottom:22px}
+.banner::before,.banner::after{display:none}
+.banner .seal{display:block; width:auto; height:auto; background:none; box-shadow:none; border-radius:0; font-family:var(--body); font-weight:700; font-size:14px; letter-spacing:.14em; color:var(--gold); text-transform:uppercase; margin-bottom:4px}
+.banner .seal::before{content:"Chapter "}
+.banner h2{color:#FFFFFF; font-size:clamp(26px,3.4vw,36px); letter-spacing:.01em; margin:0 0 6px}
+.banner p{font-size:17.5px; color:var(--mute)}
+h3{font-family:var(--body); font-weight:800; font-size:21px; letter-spacing:0; color:#FFFFFF; margin:36px 0 12px; display:block}
+h3::after{display:none}
+h4{font-family:var(--body); font-size:17px; letter-spacing:0}
+
+/* Surfaces */
+.panel{background:var(--panel); border:1px solid var(--edge); border-radius:8px; box-shadow:none}
+.panel .lbl{font-family:var(--body); font-weight:800; font-size:13px; letter-spacing:.1em; color:var(--gold)}
+.tbl{background:var(--panel); border:1px solid var(--edge); border-radius:8px}
+th{font-family:var(--body); font-weight:800; font-size:13px; letter-spacing:.06em; color:var(--mute); background:#1A2433}
+tr:nth-child(even) td{background:none}
+td{border-bottom:1px solid var(--edge)}
+.stage{background:var(--panel); border:1px solid var(--edge); border-radius:8px}
+.stage h4{color:var(--gold-hi); font-family:var(--body)}
+.rules div{background:var(--panel); border:1px solid var(--edge); border-radius:8px}
+.rules div::before{font-family:var(--body)}
+.cmd{background:var(--panel); border:1px solid var(--edge); border-top:3px solid var(--rc); border-radius:8px; box-shadow:none}
+.cmd::before{display:none}
+.cmd h4{font-family:var(--body); font-size:17.5px}
+.troop{background:var(--night); border:1px solid var(--edge); color:var(--mute)}
+.r{font-family:var(--body); font-weight:800; letter-spacing:.06em}
+
+/* Tiers */
+.tier{font-family:var(--body); border-radius:6px; width:28px; height:28px; font-size:14px}
+.tier.S{background:var(--gold); color:#1C1405}
+.tier.A{background:#7E68B8; color:#FFFFFF}
+.tier.B{background:#3F6E9C; color:#FFFFFF}
+.tier.D{background:var(--edge); color:var(--mute)}
+
+/* Spending blocks */
+details.treasury{background:var(--panel); border:1px solid var(--edge); border-radius:8px}
+details.treasury summary{font-family:var(--body); font-weight:800; font-size:16px; letter-spacing:0; color:var(--gold-hi)}
+.coin{width:22px; height:22px; border-radius:50%; transform:none; background:var(--gold); box-shadow:none; font-size:0}
+button{font-family:var(--body); font-weight:700; text-transform:none; letter-spacing:0; font-size:15px; border-radius:6px; background:var(--panel); color:var(--gold-hi); border:1px solid var(--edge)}
+.btn-gold,.btn-line,.cta{display:none}
+.topbar{background:var(--navy); border-bottom:1px solid var(--edge)}
+.topbar .t{color:var(--gold); background:none}
+footer{border-top:1px solid var(--edge)}
+@media (max-width:900px){
+  .content{padding-inline:16px}
+  .hero{padding-block:32px 24px}
+  .pillars{grid-template-columns:1fr 1fr}
+}
+</style>
+<style>
+.builds{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px}
+.build{background:var(--panel); border:1px solid var(--edge); border-top:3px solid var(--rc); border-radius:8px; padding:16px 18px; min-width:0}
+.build header{display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:10px}
+.build header h4{margin:0 6px 0 0; font-size:19px; color:#FFFFFF}
+.build dl{margin:0; display:grid; grid-template-columns:78px minmax(0,1fr); gap:7px 12px; font-size:15.5px; line-height:1.55}
+.build dt{color:var(--gold); font-weight:800; font-size:13px; letter-spacing:.06em; text-transform:uppercase; padding-top:2px}
+.build dd{margin:0; color:var(--ink)}
+@media (max-width:1100px){ .builds{grid-template-columns:1fr} }
+@media (max-width:420px){ .build dl{grid-template-columns:1fr; gap:2px} .build dd{margin-bottom:6px} }
+</style>
+
+<style>
+.tip{position:relative; margin:14px 0; padding:11px 14px 11px 46px; background:rgba(201,163,90,.07); border:1px solid #3A3A2E; border-radius:8px; font-size:16.5px; color:var(--ink)}
+.tip::before{content:"!"; position:absolute; left:13px; top:11px; width:22px; height:22px; border-radius:50%; background:var(--gold); color:#1C1405; font-weight:800; font-size:14px; display:grid; place-items:center}
+.tip.warn{background:rgba(226,110,48,.10); border-color:#B4562A}
+.tip.warn::before{background:#E8743B; color:#1F0B02}
+ul.tips{list-style:none; padding-left:0}
+ul.tips li{position:relative; padding-left:32px; margin-bottom:9px}
+ul.tips li::before{content:"!"; position:absolute; left:0; top:3px; width:20px; height:20px; border-radius:50%; background:var(--gold); color:#1C1405; font-weight:800; font-size:13px; display:grid; place-items:center}
+.panel.warn{background:rgba(226,110,48,.09); border:1px solid #B4562A}
+.panel.warn .lbl{color:#F08A4B}
+.panel.warn li::marker{color:#F08A4B}
+.rec{display:inline-block; margin-left:6px; padding:2px 8px; border-radius:5px; font-size:11.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; vertical-align:2px; white-space:nowrap; background:var(--gold); color:#1C1405}
+.rec.farm{background:#5FA4DD; color:#06182B}
+.coin{background:none !important; width:auto !important; height:auto !important; font-size:20px !important; box-shadow:none !important; transform:none !important}
+.intro{margin-top:22px; padding:14px 18px; border:1px solid var(--edge); border-left:3px solid var(--gold); border-radius:8px; background:var(--panel); font-size:17px; max-width:44em}
+.rules.detail{grid-template-columns:1fr}
+.rules.detail div{display:block; padding:14px 16px 14px 56px; position:relative}
+.rules.detail div::before{position:absolute; left:16px; top:14px}
+.rules.detail p{margin:4px 0 0; color:var(--mute); font-size:16px}
+.rules.detail .eg{color:var(--ink)}
+.gloss{display:grid; grid-template-columns:150px minmax(0,1fr); gap:8px 16px; margin:0; font-size:16px}
+.gloss dt{font-weight:800; color:var(--gold-hi)}
+.gloss dd{margin:0; color:var(--ink)}
+@media (max-width:560px){ .gloss{grid-template-columns:1fr; gap:2px} .gloss dd{margin-bottom:8px} }
+</style>
+<style>html,body{margin:0} img{max-width:100%} [hidden]{display:none!important}</style>
+</head>
+<body>
+<aside class="side" id="side" aria-label="Chapters">
+  <div class="crest">
+    <svg viewBox="0 0 80 92" aria-hidden="true">
+      <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE3A1"/><stop offset=".55" stop-color="#E4B95B"/><stop offset="1" stop-color="#9C7428"/></linearGradient></defs>
+      <path d="M40 4 L72 14 L72 46 C72 66 58 80 40 88 C22 80 8 66 8 46 L8 14 Z" fill="#10233C" stroke="url(#g)" stroke-width="4"/>
+      <path d="M40 12 L64 19.5 L64 46 C64 61 54 72 40 79 C26 72 16 61 16 46 L16 19.5 Z" fill="none" stroke="#9C7428" stroke-width="1.5"/>
+      <g stroke="url(#g)" stroke-width="4" stroke-linecap="round"><line x1="26" y1="28" x2="54" y2="62"/><line x1="54" y1="28" x2="26" y2="62"/></g>
+      <g stroke="url(#g)" stroke-width="3" stroke-linecap="round"><line x1="22" y1="58" x2="30" y2="66"/><line x1="58" y1="58" x2="50" y2="66"/></g>
+      <circle cx="40" cy="45" r="6" fill="url(#g)"/>
+    </svg>
+    <div class="name">[ALLIANCE]</div>
+    <div class="sub">Kingdom [#] · F2P Playbook</div>
+  </div>
+  <nav class="navscroll" id="nav">
+    <div class="navch" data-ch="goal"><a href="#goal"><span class="med" data-n="★">★</span>Our Goal</a>
+      <ul class="navsub"><li><a href="#s-goal-gain">What comes with it</a></li><li><a href="#s-goal-plan">How we get there</a></li><li><a href="#s-goal-strategy">Our strategy</a></li><li><a href="#s-goal-ask">What we ask of you</a></li></ul></div>
+    <div class="navch" data-ch="start"><a href="#start"><span class="med" data-n="00">0</span>Getting Started</a>
+      <ul class="navsub"><li><a href="#s-kingdom">Kingdom</a></li><li><a href="#s-accounts">Accounts</a></li><li><a href="#s-civ">Civilization</a></li><li><a href="#s-firsthour">First hour</a></li><li><a href="#s-glossary">Words you'll see</a></li></ul></div>
+    <div class="navch" data-ch="rules"><a href="#rules"><span class="med" data-n="01">1</span>Daily Routine &amp; Rules</a>
+      <ul class="navsub"><li><a href="#s-twenty">20 rules</a></li><li><a href="#s-daily">Daily checklist</a></li><li><a href="#s-ladder">Spending ladder</a></li></ul></div>
+    <div class="navch" data-ch="buildings"><a href="#buildings"><span class="med" data-n="02">2</span>City Hall &amp; Buildings</a>
+      <ul class="navsub"><li><a href="#s-loop">How upgrading works</a></li><li><a href="#s-chlevels">Level by level</a></li><li><a href="#s-focus">Focus per stage</a></li><li><a href="#s-build">Building priority</a></li><li><a href="#s-research">Research</a></li></ul></div>
+    <div class="navch" data-ch="commanders"><a href="#commanders"><span class="med" data-n="03">3</span>Commanders</a>
+      <ul class="navsub"><li><a href="#s-cmdrules">Commander rules</a></li><li><a href="#s-roadmap">Roadmap</a></li><li><a href="#s-roster">Roster</a></li><li><a href="#s-pairs">Pairs &amp; talents</a></li><li><a href="#s-builds">Commander builds</a></li><li><a href="#s-gear">Equipment</a></li><li><a href="#s-formation">Formations &amp; armaments</a></li><li><a href="#s-sculpt">Sculptures</a></li><li><a href="#s-level">Leveling &amp; troops</a></li></ul></div>
+    <div class="navch" data-ch="economy"><a href="#economy"><span class="med" data-n="04">4</span>Gems &amp; Resources</a>
+      <ul class="navsub"><li><a href="#s-gems">Gems</a></li><li><a href="#s-rss">Resources</a></li><li><a href="#s-keys">Keys &amp; shops</a></li><li><a href="#s-speedups">Speedups</a></li></ul></div>
+    <div class="navch" data-ch="farms"><a href="#farms"><span class="med" data-n="05">5</span>Farm Accounts</a>
+      <ul class="navsub"><li><a href="#s-farmjob">Role &amp; setup</a></li><li><a href="#s-gatherers">Gathering commanders</a></li><li><a href="#s-gathergear">Gathering gear</a></li><li><a href="#s-speed">Gathering speed</a></li><li><a href="#s-farmloop">Daily loop</a></li></ul></div>
+    <div class="navch" data-ch="events"><a href="#events"><span class="med" data-n="06">6</span>Events</a>
+      <ul class="navsub"><li><a href="#s-tiers">Tier list</a></li><li><a href="#s-mge">Mightiest Governor</a></li><li><a href="#s-aoo">Ark of Osiris</a></li><li><a href="#s-calendar">Calendar habits</a></li></ul></div>
+    <div class="navch" data-ch="alliance"><a href="#alliance"><span class="med" data-n="07">7</span>Alliance &amp; Conquest</a>
+      <ul class="navsub"><li><a href="#s-ranks">Ranks &amp; recruiting</a></li><li><a href="#s-tech">Tech &amp; territory</a></li><li><a href="#s-alliancetech">Alliance tech order</a></li><li><a href="#s-holy">Holy sites</a></li><li><a href="#s-zones">Kingdom zones</a></li><li><a href="#s-province">Taking a province</a></li><li><a href="#s-conquest">Conquest plan</a></li><li><a href="#s-kvk">KvK</a></li><li><a href="#s-discord">Discord</a></li></ul></div>
+    <div class="navch" data-ch="lotus"><a href="#lotus"><span class="med" data-n="08">8</span>Hidden Lotus</a>
+      <ul class="navsub"><li><a href="#s-lotusplan">7-day plan</a></li><li><a href="#s-lotustips">Tips</a></li></ul></div>
+    </nav>
+  <div class="sidefoot">Meta reviewed 11 October 2026</div>
+</aside>
+<div class="scrim" id="scrim"></div>
+
+<div class="content">
+  <div class="topbar"><button type="button" id="menuBtn" aria-controls="side" aria-expanded="false">☰ Chapters</button><span class="t">F2P Playbook</span></div>
+  <main class="wrap">
+
+  <header class="hero">
+    <div class="kicker">[Alliance Name] · Kingdom [#]</div>
+    <h1>Conquer the Kingdom</h1>
+    <div class="tag">Free to play · Built to win</div>
+    <div class="orn"><i></i></div>
+    <p>One main and two farms per governor. The commanders to build, where every gem goes, which events pay, and how our alliance takes the map, zone by zone.</p>
+    <div class="intro"><b>This is a free-to-play playbook.</b> Everything here works without spending anything. If you're a low or budget spender, open the <b>💰 Treasury</b> box at the end of each chapter: it lists the best-value buys for that topic, so any money you spend goes where it matters most.</div>
+    <div class="cta"><a class="btn-gold" href="#start">Start the Codex</a><a class="btn-line" href="#s-daily">Daily Checklist</a></div>
+    <div class="pillars">
+      <div class="pillar"><b>1 + 2</b><span>main + farm accounts</span></div>
+      <div class="pillar"><b>1.5M</b><span>power in 7 days for Lotus</span></div>
+      <div class="pillar"><b>CH 16</b><span>Lost Kingdom entry</span></div>
+      <div class="pillar"><b>~100 days</b><span>to the first KvK</span></div>
+    </div>
+  </header>
+
+  <!-- ================= GOAL ================= -->
+  <section class="ch" id="goal">
+    <div class="banner"><div class="seal">★</div><div><h2>Our Goal: Own a Province</h2><p>What this alliance is working toward, what every member gets from it, and what we ask in return.</p></div></div>
+
+    <p>Our first big objective is simple: <b>take and hold one full province in Zone 1</b>. Every province is reached through several passes (gates), so owning one means holding <b>all of its passes</b> and the land between them. Everything in this playbook, from daily habits to alliance tech, builds toward that. Once the province is ours, we push into Zone 2 for the shrines, and later decide on the Lost Temple from a position of strength.</p>
+
+    <h3 id="s-goal-gain">What comes with it</h3>
+    <div class="grid g2">
+      <div class="panel"><div class="lbl">For every member</div><ul>
+        <li><b>+25% gathering speed</b> anywhere inside our territory, on main and farms.</li>
+        <li><b>Safe farming:</b> with our passes held, enemies can't march in, and our territory blocks their teleports, so raids almost stop.</li>
+        <li><b>Holy site buffs for everyone:</b> building and research speed (altars), commander XP and gathering (sanctums).</li>
+        <li><b>Alliance resource points</b> inside our land, which pay for alliance tech.</li>
+        <li><b>A place to grow in peace</b> before KvK, close to friends who help every timer.</li>
+      </ul></div>
+      <div class="panel"><div class="lbl">For the alliance</div><ul>
+        <li><b>A strong position</b> in the kingdom: other alliances negotiate with us instead of attacking.</li>
+        <li><b>Easier recruiting:</b> active players want to join an alliance that owns land.</li>
+        <li><b>A springboard</b> to the Zone 2 shrines (Radiance: healing and AP, War: training) and, later, a say over the Lost Temple and the King's titles.</li>
+        <li><b>A united home base</b> for the first KvK.</li>
+      </ul></div>
+    </div>
+
+    <h3 id="s-goal-plan">How we get there</h3>
+    <div class="tbl"><table>
+      <tr><th>When</th><th>Step</th></tr>
+      <tr><td class="n">Weeks 1–2</td><td>Recruit a core of 15–20 active players, settle together in a Zone 1 corner, max member capacity and help techs.</td></tr>
+      <tr><td class="n">Weeks 2–4</td><td>Plant the Alliance Center and flags over the best tiles, research Flag Quantity, map every pass of the province and who sits behind it, and sign non-aggression pacts with those neighbours.</td></tr>
+      <tr><td class="n">Weeks 4–8</td><td>Take the passes one by one, starting with the one facing the strongest neighbour. Garrison them, hold one altar and one sanctum of each type, and cover the rest with flags.</td></tr>
+      <tr><td class="n">Weeks 8–14</td><td>Push into Zone 2 for Radiance and War shrines, prepare everyone for the first KvK.</td></tr>
+    </table></div>
+    <p class="tip">The full details are in Chapter 07 (Alliance &amp; Conquest): kingdom zones, taking a province, holy sites and alliance tech.</p>
+
+    <h3 id="s-goal-strategy">Our strategy for holding it</h3>
+    <div class="grid g2">
+      <div class="panel"><div class="lbl">Fewer fronts</div><ul>
+        <li>Pick a province with the <b>fewest passes</b> and the friendliest neighbours behind them.</li>
+        <li>Pacts with the neighbours behind the quiet passes, so we only ever defend one real front.</li>
+        <li>Settle our cities in the <b>middle</b> of the province, farms deepest inside, never next to a pass.</li>
+      </ul></div>
+      <div class="panel"><div class="lbl">Every pass has an owner</div><ul>
+        <li>Each held pass has a <b>pass captain</b> per timezone (EU / US / Asia) who keeps its garrison filled.</li>
+        <li>Anyone who sees enemies gathering near a pass posts it in #rally-calls. Everyone nearby shields up or reinforces.</li>
+        <li>If we can't hold every pass, we keep the core and the pass facing the biggest threat, and give up edges, never the centre.</li>
+      </ul></div>
+    </div>
+    <p class="tip">The full plan, step by step, is in Chapter 07 under "Taking a province".</p>
+
+    <h3 id="s-goal-ask">What we ask of you</h3>
+    <div class="grid g3">
+      <div class="panel"><div class="lbl">Be active</div><p>Log in daily, help timers and donate to the starred alliance tech. Activity holds land, not raw power.</p></div>
+      <div class="panel"><div class="lbl">Live inside our land</div><p>Keep your main and farms inside alliance territory and gather there. Move with the alliance when we expand.</p></div>
+      <div class="panel"><div class="lbl">Show up for fights</div><p>Holy sites are contested every 3 days. Join rallies and garrisons when officers call, in your timezone.</p></div>
+    </div>
+  </section>
+
+  <!-- ================= 00 ================= -->
+  <section class="ch" id="start">
+    <div class="banner"><div class="seal">00</div><div><h2>Getting Started</h2><p>Kingdom, accounts, civilization and the first hour. Mistakes here cost weeks later.</p></div></div>
+
+    <h3 id="s-kingdom">The kingdom</h3>
+    <div class="grid g3">
+      <div class="panel"><div class="lbl">Brand-new kingdom</div><p>Start in a kingdom that has just opened (the server list marks new ones). Everyone starts at the same level, you get every new-kingdom event and its rewards, and the Hidden Lotus skin is still possible.</p></div>
+      <div class="panel"><div class="lbl">Plan the opening day</div><p>Get the core 10–15 players into Discord <b>before</b> the kingdom opens. Agree the alliance name, tag and a meeting point on the map, so everyone teleports to the same place in the first hour.</p></div>
+      <div class="panel"><div class="lbl">Pick the right corner</div><p>Settle in an empty corner of Zone 1 with good resource tiles, in a province with as few passes (gates) as possible and no big alliance next door. Never settle beside a big alliance's fort: you become their first target.</p></div>
+    </div>
+
+    <h3 id="s-accounts">Three accounts</h3>
+    <p>Every governor runs <b>one main</b> (the account you fight and grow with) and <b>two farms</b> (extra accounts that gather resources and send them to the main). Create all three on day 1, in the same kingdom, so the farms can ship resources from the very first hour.</p>
+    <div class="grid g2">
+      <div class="panel"><div class="lbl">Option A · PC (easiest)</div><ol>
+        <li>Install an Android emulator such as BlueStacks or LDPlayer.</li>
+        <li>Use its <b>multi-instance</b> feature to open three copies of the game side by side: one for the main, one per farm.</li>
+        <li>Log each instance into its own account. You can play all three at once.</li>
+        <li>A PC with 8–16 GB of RAM handles three instances comfortably. Lower the graphics on the farm instances.</li>
+      </ol></div>
+      <div class="panel"><div class="lbl">Option B · phone only</div><ol>
+        <li>Create the farms in the game itself: <b>Settings → Account → Character Management</b> lets you add new characters in the same kingdom and switch between them without logging out. The menu wording can differ slightly by game version.</li>
+        <li>Each login, do the <b>farms first</b> (gather, transfer), then switch to the <b>main last</b> and spend what just arrived.</li>
+        <li>An old phone or tablet makes a great second device: keep the farms logged in there and the main on your phone.</li>
+        <li>On farms, turn off every notification except "under attack" and "shield expiring" so your phone stays quiet.</li>
+      </ol></div>
+    </div>
+    <p class="tip">Name the accounts clearly, for example <b>Name</b>, <b>Name F1</b>, <b>Name F2</b>, so officers always know which farm belongs to whom.</p>
+
+    <h3 id="s-civ">Civilization</h3>
+    <div class="tbl"><table>
+      <tr><th>Account</th><th>Civilization</th><th>Starter</th><th>Why</th></tr>
+      <tr><td>Main · infantry</td><td><b>China</b> <span class="rec">Recommended · main</span></td><td>Sun Tzu <span class="r E">Epic</span></td><td>The best F2P infantry start. Sun Tzu is a strong lead and partner for a long time, and China's building speed bonus helps early growth.</td></tr>
+      <tr><td>Main · strong alternative</td><td><b>Britain</b></td><td>Boudica <span class="r E">Epic</span></td><td>Excellent against barbarians and a great support.</td></tr>
+      <tr><td>Main · cavalry</td><td><b>Spain</b></td><td>Pelagius <span class="r L">Legendary</span></td><td>Starts you with a Legendary cavalry lead. His skills cost Legendary sculptures.</td></tr>
+      <tr><td>Main · other</td><td>Rome</td><td>Scipio <span class="r E">Epic</span></td><td>Solid all-rounder.</td></tr>
+      <tr><td>Farm 1 · active</td><td><b>France</b> <span class="rec farm">Recommended · farm</span></td><td>Joan of Arc <span class="r E">Epic</span></td><td>Joan is a good gathering commander from day 1, so the farm gathers well immediately.</td></tr>
+      <tr><td>Farm 2 · lazy</td><td><b>Spain</b> or Rome <span class="rec farm">Recommended · farm</span></td><td>—</td><td>Spain suits a farm you only open a few times a day. Rome is best if this farm only gathers food.</td></tr>
+    </table></div>
+    <p class="tip">Pick the main's civilization for fighting and growth, never for gathering. Gathering bonuses only matter on farms.</p>
+
+    <h3 id="s-firsthour">The first hour</h3>
+    <div class="grid g2">
+      <div class="panel"><div class="lbl">Do</div><ol>
+        <li><b>Finish the tutorial and the chapter quests</b> (the quest list on the left of the screen). They give big piles of resources and speedups early on.</li>
+        <li><b>Join our alliance</b>, then use the free <b>Beginner Teleport</b> item to move your city next to the alliance. Do this on all three accounts.</li>
+        <li><b>Redeem every gift code</b> (Settings → Redeem) on all three accounts. Codes are posted in #codes.</li>
+        <li><b>Send scouts</b> to clear the fog. They find villages (free rewards) and caves (research, speedups).</li>
+        <li><b>Queue a building and a research before every logout.</b> An idle queue is lost growth.</li>
+        <li><b>Turn on notifications</b> for builder finished, shield expiring and being attacked.</li>
+        <li><b>Keep the starter peace shield.</b> Don't attack anyone in the first days. Fighting costs troops and slows growth.</li>
+        <li><b>Spend action points on barbarians.</b> The action point bar refills over time. When it's full, the extra is wasted.</li>
+      </ol></div>
+      <div class="panel warn"><div class="lbl">Don't</div><ul>
+        <li><b>Level many commanders at once.</b> XP is limited. Spread over five commanders, none of them gets strong.</li>
+        <li><b>Use speedups before asking for help.</b> Every alliance help cuts time off for free.</li>
+        <li><b>Spend gems on anything but VIP and the second builder.</b> See Chapter 4 for the full gem order.</li>
+        <li><b>Open resource tokens</b> (the resource items in your bag). Save them for events and emergencies.</li>
+        <li><b>Go inactive for hours.</b> Every hour your builder sits idle is power you never get back.</li>
+      </ul></div>
+    </div>
+
+    <p class="tip">Starting a brand-new account? Read <b>Chapter 08 · Hidden Lotus</b> on day 1. It only applies to your first 7 days.</p>
+
+    <h3 id="s-glossary">Words you'll see</h3>
+    <div class="panel"><dl class="gloss">
+      <dt>F2P</dt><dd>Free to play: not spending real money.</dd>
+      <dt>Main / farm</dt><dd>Your fighting account / your extra gathering accounts.</dd>
+      <dt>CH</dt><dd>City Hall, your main building. Its level unlocks everything else.</dd>
+      <dt>AP</dt><dd>Action points, spent to attack barbarians. They refill over time.</dd>
+      <dt>RSS</dt><dd>Resources: food, wood, stone and gold.</dd>
+      <dt>Primary / secondary</dt><dd>The two commanders leading one army. The primary brings talents, gear and armaments. The secondary adds only its skills.</dd>
+      <dt>Sculptures / heads</dt><dd>Items that unlock and upgrade commander skills. Gold heads are Legendary sculptures.</dd>
+      <dt>5-5-1-1</dt><dd>Skill levels of a commander's four skills (here: skills 1 and 2 maxed, 3 and 4 at level 1).</dd>
+      <dt>Expertise</dt><dd>The extra 5th skill unlocked once all four skills are at level 5.</dd>
+      <dt>T4 / T5</dt><dd>Troop tier 4 / tier 5. Higher tiers are stronger and cost more.</dd>
+      <dt>Rally / garrison</dt><dd>A group attack led by one player / the troops defending a city or building.</dd>
+      <dt>MGE</dt><dd>Mightiest Governor Event, the main contest for Legendary sculptures.</dd>
+      <dt>AoO</dt><dd>Ark of Osiris, a 30-vs-30 alliance battle.</dd>
+      <dt>KvK</dt><dd>Kingdom versus Kingdom, played on the Lost Kingdom map.</dd>
+      <dt>Holy site / pass</dt><dd>Map buildings that give buffs / the gates between areas of the map.</dd>
+    </dl></div>
+
+    <details class="treasury"><summary><span class="coin">💰</span>Treasury · for low &amp; budget spenders<span class="chev">▸</span></summary><div class="body"><ol>
+      <li><b>First-purchase pack.</b> The best value in the game. Buy it in the first days.</li>
+      <li><b>VIP 6</b> unlocks a permanent second builder. Otherwise it only comes from a 2-day Builders Recruitment item.</li>
+      <li><b>30-day gem supply.</b> Cheap, and pays out daily for a month.</li>
+    </ol></div></details>
+  </section>
+
+  <!-- ================= 01 ================= -->
+  <section class="ch" id="rules">
+    <div class="banner"><div class="seal">01</div><div><h2>Daily Routine &amp; Rules</h2><p>The habits that matter most. If you only read one chapter after Getting Started, read this one.</p></div></div>
+
+    <h3 id="s-twenty">The 20 rules</h3>
+    <div class="rules">
+      <div><span>Builder and Academy never idle. Queue the longest timer before logging off.</span></div>
+      <div><span>One troop type on the main.</span></div>
+      <div><span>First skill to 5 before unlocking the others.</span></div>
+      <div><span>Only the primary's talents count. Plan pairs around it.</span></div>
+      <div><span>Never 5-star a Legendary.</span></div>
+      <div><span>Universal sculptures only on your 1–2 long-term Legendaries.</span></div>
+      <div><span>Epic cornerstones → Aethelflaed → YSG → one Prime.</span></div>
+      <div><span>Gather gems on the main every day with Constance.</span></div>
+      <div><span>VIP 6 first, then 10, then 12.</span></div>
+      <div><span>Save gems for More than Gems.</span></div>
+      <div><span>Save gold keys for an event that rewards openings.</span></div>
+      <div><span>No resource tokens in peacetime.</span></div>
+      <div><span>Speedups only on City Hall or in a scoring event.</span></div>
+      <div><span>Alliance help before any speedup.</span></div>
+      <div><span>Delay Tier 5. Gold is the wall.</span></div>
+      <div><span>Farms gather, hold and transfer. They never fight in peacetime.</span></div>
+      <div><span>Gather inside alliance territory for +25%.</span></div>
+      <div><span>Hold one holy site of each type.</span></div>
+      <div><span>Prepare 2–4 weeks before Mightiest Governor and KvK.</span></div>
+      <div><span>Show up every day. Activity is the F2P advantage.</span></div>
+    </div>
+
+    <h3 id="s-daily">Daily checklist</h3>
+    <p class="small">Ticks are saved in this browser and clear each new day.</p>
+    <div class="grid g2" id="daily">
+      <div class="panel"><div class="lbl">Main · 15–20 min</div>
+        <label class="check"><input type="checkbox" id="m1"><span>Collect, queue builder and research</span></label>
+        <label class="check"><input type="checkbox" id="m2"><span>Ask for help, help others, donate to tech</span></label>
+        <label class="check"><input type="checkbox" id="m3"><span>Armies on gem deposits</span></label>
+        <label class="check"><input type="checkbox" id="m4"><span>Barbarians or sanctum guardians until AP is low</span></label>
+        <label class="check"><input type="checkbox" id="m5"><span>Expedition, 5 Sunset Canyon fights, Lohar's Trial</span></label>
+        <label class="check"><input type="checkbox" id="m6"><span>Daily quests + 4 activity chests</span></label>
+        <label class="check"><input type="checkbox" id="m7"><span>VIP chest, free silver key, Courier Station</span></label>
+      </div>
+      <div class="panel"><div class="lbl">Farms · 5 min each</div>
+        <label class="check"><input type="checkbox" id="f1"><span>Farm 1: collect, runes, gather in territory</span></label>
+        <label class="check"><input type="checkbox" id="f2"><span>Farm 1: transfer what the main needs</span></label>
+        <label class="check"><input type="checkbox" id="f3"><span>Farm 1: dailies, help, donate</span></label>
+        <label class="check"><input type="checkbox" id="f4"><span>Farm 2: collect, runes, gather in territory</span></label>
+        <label class="check"><input type="checkbox" id="f5"><span>Farm 2: transfer what the main needs</span></label>
+        <label class="check"><input type="checkbox" id="f6"><span>Farm 2: dailies, help, donate</span></label>
+        <label class="check"><input type="checkbox" id="f7"><span>Check #events for anything to save for</span></label>
+      </div>
+    </div>
+    <div class="ctl"><button type="button" id="clearDaily">Clear today's ticks</button></div>
+
+    <h3 id="s-ladder">Spending ladder</h3>
+    <div class="tbl"><table>
+      <tr><th>Level</th><th>Buy</th><th>Why</th></tr>
+      <tr><td>€5–10 / month</td><td>30-day gem supply + first-purchase pack</td><td>Best value in the game</td></tr>
+      <tr><td>€20–30 / month</td><td>+ VIP push to 10, early growth or builder packs</td><td>Permanent account speed</td></tr>
+      <tr><td>More</td><td>+ packs for ONE core Legendary, Premium Season Crystal Supply</td><td>Focus, not spread</td></tr>
+      <tr><td>Any spender</td><td>Alliance gift packs</td><td>Helps the whole alliance</td></tr>
+      <tr><td>Never</td><td>Resource packs, random speedups, a second troop type</td><td>Low value or split focus</td></tr>
+    </table></div>
+    <div class="ctl"><button type="button" id="toggleSpend">Open every Treasury</button></div>
+
+  </section>
+  <!-- ================= 02 ================= -->
+  <section class="ch" id="buildings">
+    <div class="banner"><div class="seal">02</div><div><h2>City Hall &amp; Buildings</h2><p>Your City Hall (CH) level decides almost everything: troop tiers, number of armies, Lost Kingdom entry. Here is exactly what to build for every level, from CH 2 to CH 25.</p></div></div>
+
+    <h3 id="s-loop">How upgrading works</h3>
+    <p>To upgrade City Hall to the next level, two or three specific buildings must already be at the level just below it. The <b>Wall</b> is one of them every single time. The game shows the list when you tap City Hall → Upgrade, and the table below shows it for every level.</p>
+    <p class="tip"><b>Plan one level ahead.</b> While City Hall upgrades with your first builder, use the second builder on the building the <i>next</i> level will ask for. Then you never wait. The "Prepare next" column tells you which one.</p>
+
+    <h3 id="s-chlevels">Level by level: City Hall 2 → 25</h3>
+    <div class="tbl"><table>
+      <tr><th>Upgrade to</th><th>Required first</th><th>Prepare next (2nd builder)</th><th>Unlocks</th></tr>
+      <tr><td class="n"><b>CH 2</b></td><td>Nothing extra</td><td>Wall 2 (for CH 3)</td><td>—</td></tr>
+      <tr><td class="n"><b>CH 3</b></td><td><b>Wall 2</b></td><td>Wall 3 (for CH 4)</td><td>—</td></tr>
+      <tr><td class="n"><b>CH 4</b></td><td><b>Wall 3</b></td><td>Hospital 4 (for CH 5)</td><td>—</td></tr>
+      <tr><td class="n"><b>CH 5</b></td><td><b>Wall 4</b>, <b>Hospital 4</b></td><td>Scout Camp 5 (for CH 6)</td><td>2nd army</td></tr>
+      <tr><td class="n"><b>CH 6</b></td><td><b>Wall 5</b>, <b>Scout Camp 5</b></td><td>Storehouse 6 (for CH 7)</td><td>—</td></tr>
+      <tr><td class="n"><b>CH 7</b></td><td><b>Wall 6</b>, <b>Storehouse 6</b></td><td>Barracks 7 (for CH 8)</td><td>—</td></tr>
+      <tr><td class="n"><b>CH 8</b></td><td><b>Wall 7</b>, <b>Barracks 7</b></td><td>Alliance Center 8 (for CH 9)</td><td>Tier 2 troops</td></tr>
+      <tr><td class="n"><b>CH 9</b></td><td><b>Wall 8</b>, <b>Alliance Center 8</b></td><td>Academy 9 (for CH 10)</td><td>—</td></tr>
+      <tr><td class="n"><b>CH 10</b></td><td><b>Wall 9</b>, <b>Academy 9</b></td><td>Hospital 10 (for CH 11)</td><td>—</td></tr>
+      <tr><td class="n"><b>CH 11</b></td><td><b>Wall 10</b>, <b>Hospital 10</b></td><td>Storehouse 11 (for CH 12)</td><td>3rd army</td></tr>
+      <tr><td class="n"><b>CH 12</b></td><td><b>Wall 11</b>, <b>Storehouse 11</b></td><td>Archery Range 12 (for CH 13)</td><td>—</td></tr>
+      <tr><td class="n"><b>CH 13</b></td><td><b>Wall 12</b>, <b>Archery Range 12</b></td><td>Alliance Center 13, Trading Post 13 (for CH 14)</td><td>—</td></tr>
+      <tr><td class="n"><b>CH 14</b></td><td><b>Wall 13</b>, <b>Alliance Center 13</b>, <b>Trading Post 13</b></td><td>Scout Camp 14 (for CH 15)</td><td>—</td></tr>
+      <tr><td class="n"><b>CH 15</b></td><td><b>Wall 14</b>, <b>Scout Camp 14</b></td><td>Academy 15 (for CH 16)</td><td>—</td></tr>
+      <tr><td class="n"><b>CH 16</b></td><td><b>Wall 15</b>, <b>Academy 15</b></td><td>Hospital 16 (for CH 17)</td><td>Lost Kingdom entry (KvK), Blacksmith</td></tr>
+      <tr><td class="n"><b>CH 17</b></td><td><b>Wall 16</b>, <b>Hospital 16</b></td><td>Storehouse 17 (for CH 18)</td><td>4th army</td></tr>
+      <tr><td class="n"><b>CH 18</b></td><td><b>Wall 17</b>, <b>Storehouse 17</b></td><td>Stable 18 (for CH 19)</td><td>—</td></tr>
+      <tr><td class="n"><b>CH 19</b></td><td><b>Wall 18</b>, <b>Stable 18</b></td><td>Alliance Center 19 (for CH 20)</td><td>—</td></tr>
+      <tr><td class="n"><b>CH 20</b></td><td><b>Wall 19</b>, <b>Alliance Center 19</b></td><td>Academy 20 (for CH 21)</td><td>—</td></tr>
+      <tr><td class="n"><b>CH 21</b></td><td><b>Wall 20</b>, <b>Academy 20</b></td><td>Hospital 21 (for CH 22)</td><td>Tier 4 troops</td></tr>
+      <tr><td class="n"><b>CH 22</b></td><td><b>Wall 21</b>, <b>Hospital 21</b></td><td>Storehouse 22 (for CH 23)</td><td>5th army</td></tr>
+      <tr><td class="n"><b>CH 23</b></td><td><b>Wall 22</b>, <b>Storehouse 22</b></td><td>Siege Workshop 23 (for CH 24)</td><td>—</td></tr>
+      <tr><td class="n"><b>CH 24</b></td><td><b>Wall 23</b>, <b>Siege Workshop 23</b></td><td>Trading Post 24, 1 Master's Blueprint (for CH 25)</td><td>—</td></tr>
+      <tr><td class="n"><b>CH 25</b></td><td><b>Wall 24</b>, <b>Trading Post 24</b>, <b>1 Master's Blueprint</b></td><td>Watchtower, Castle and Academy for the Tier 5 path</td><td>Max level, Tier 5 path</td></tr>
+    </table></div>
+    <p class="tip">The Wall is always needed. Upgrade it right after each City Hall upgrade finishes, so it never blocks you.</p>
+
+    <h3 id="s-focus">What to focus on at each stage</h3>
+    <div class="grid g2">
+      <div class="panel"><div class="lbl">CH 1–10 · days 1–2</div><ul>
+        <li>Rush City Hall. Follow the chapter quests: they pay for most of it.</li>
+        <li>Build every farm, lumber mill and quarry the city allows. Early production matters.</li>
+        <li>Keep the Academy researching economy techs nonstop.</li>
+        <li>Barracks for your troop type, so troops train while you build.</li>
+      </ul></div>
+      <div class="panel"><div class="lbl">CH 11–16 · week 1</div><ul>
+        <li>Push to CH 16: it opens the Lost Kingdom and is the Lotus pace.</li>
+        <li>Trading Post 13 on all accounts, so farms start sending well.</li>
+        <li>Academy and Hospital: research speed and fewer deaths.</li>
+        <li>Alliance Center: more helps on every timer.</li>
+      </ul></div>
+      <div class="panel"><div class="lbl">CH 17–21 · ≈ weeks 2–6</div><ul>
+        <li>CH 21 unlocks Tier 4, the F2P workhorse troop.</li>
+        <li>Academy 20 and the Tier 4 research for your troop type.</li>
+        <li>Your troop building (Barracks, Stable or Range) to unlock and upgrade Tier 4.</li>
+        <li>Save speedups for CH upgrades and events, not side buildings.</li>
+      </ul></div>
+      <div class="panel"><div class="lbl">CH 22–25 · ≈ week 6+</div><ul>
+        <li>Each level now takes millions of resources: farms feed the main full time.</li>
+        <li>Siege Workshop 23 and Trading Post 24 are the usual blockers. Start them early.</li>
+        <li>CH 25 needs a <b>Master's Blueprint</b>: keep one from events.</li>
+        <li>After CH 25: Watchtower, Castle and Academy for the Tier 5 path, only when you're ready for its gold cost.</li>
+      </ul></div>
+    </div>
+    <p class="tip">Weeks are a typical F2P pace in a new kingdom. Active players with farms move faster.</p>
+
+    <h3 id="s-build">Building priority</h3>
+    <p>Buildings are your main source of power early on. Use one simple loop: <b>upgrade City Hall → bring every other building up to the same level → upgrade City Hall again.</b> City Hall can't go higher than the buildings it requires, so keeping everything level means you never get stuck waiting. The <b>Wall</b> is required for <b>every</b> City Hall level, so it's always part of the loop. Watchtower and Castle can wait until the late game, when the Tier 5 path needs them.</p>
+    <div class="grid g2">
+      <div class="panel"><div class="lbl">Order inside each loop</div><ol>
+        <li><b>City Hall</b>: everything unlocks here</li>
+        <li><b>Wall</b>: required for every City Hall level</li>
+        <li><b>The other building City Hall asks for</b> (see the table above)</li>
+        <li><b>Academy</b>: faster research, and needed for troop tiers</li>
+        <li>Barracks, Stable or Archery Range for your troop type</li>
+        <li><b>Hospital</b>: fewer troops die in fights</li>
+        <li><b>Storehouse</b>: protects resources from raids</li>
+        <li><b>Trading Post</b>: on all 3 accounts, it sets how much farms can send</li>
+        <li><b>Alliance Center</b>: more alliance helps per timer</li>
+        <li>Farms, Lumber Mills, Quarries, Goldmine: production adds up</li>
+      </ol></div>
+      <div class="panel"><div class="lbl">Milestones</div>
+        <div class="tbl" style="margin:0;border:none;background:none"><table style="min-width:0">
+          <tr><th>City Hall</th><th>Unlocks</th></tr>
+          <tr><td class="n">5 / 11 / 17 / 22</td><td>2nd / 3rd / 4th / 5th army</td></tr>
+          <tr><td class="n">8</td><td>Tier 2 troops</td></tr>
+          <tr><td class="n">16</td><td>Lost Kingdom (KvK) entry</td></tr>
+          <tr><td class="n">16–17</td><td>Lotus pace by day 6–7</td></tr>
+          <tr><td class="n">21</td><td>Tier 4 troops</td></tr>
+          <tr><td class="n">25</td><td>Max level, start of the Tier 5 path</td></tr>
+        </table></div>
+        <p class="tip">Speedups: ask for alliance help first, then use speedups only on City Hall, the buildings it needs, or during events that score them.</p>
+      </div>
+    </div>
+
+    <h3 id="s-research">Research</h3>
+    <div class="tbl"><table>
+      <tr><th>Phase</th><th>Research</th><th>Why</th></tr>
+      <tr><td>Early</td><td>Economy: building speed, research speed, gathering</td><td>Growth compounds</td></tr>
+      <tr><td>Mid</td><td>Your troop type's stats, troop capacity, number of armies</td><td>Fighting strength</td></tr>
+      <tr><td>Before KvK</td><td>Healing speed, hospital capacity, attack, defense, health</td><td>Survive the war</td></tr>
+      <tr><td>Season of Conquest</td><td>Crystal tech, combat nodes first</td><td>Seasonal power</td></tr>
+    </table></div>
+
+
+    <details class="treasury"><summary><span class="coin">💰</span>Treasury · for low &amp; budget spenders<span class="chev">▸</span></summary><div class="body"><ol>
+      <li><b>VIP 6</b> for a permanent second builder: the single biggest building speed-up.</li>
+      <li><b>Growth or builder packs</b> in the first weeks: speedups and resources for City Hall.</li>
+      <li><b>Master's Blueprint</b> packs only when CH 24 is done and the blueprint is your last blocker.</li>
+    </ol></div></details>
+  </section>
+
+  <!-- ================= 03 ================= -->
+  <section class="ch" id="commanders">
+    <div class="banner"><div class="seal">03</div><div><h2>Commanders</h2><p>Which commanders to build, how to level them, their talents, gear, formations and sculptures. This is where F2P accounts win or waste the most.</p></div></div>
+
+    <h3 id="s-cmdrules">Commander rules</h3>
+    <p>Commanders are where most F2P accounts waste resources. Follow these eight rules and every sculpture, tome and talent point counts.</p>
+    <div class="rules detail">
+      <div><b>Decide a primary for every army.</b>
+        <p>Each army has two commanders. The <b>primary</b> (first slot) brings their talent tree, equipment and armaments. The secondary only adds their skills. So talent points, gear and armaments only matter on primaries.</p>
+        <p class="eg">Example: in Bjorn + Sun Tzu, Bjorn wears the gear and uses his talents. Sun Tzu only needs his skills.</p></div>
+      <div><b>Keep secondaries light.</b>
+        <p>A secondary's talents do nothing, so don't pour XP tomes into them. Level them enough to work (around level 30) and spend their sculptures on skills.</p></div>
+      <div><b>Max the first skill to level 5 first.</b>
+        <p>Skill 1 is the active skill: it fires every time the rage bar fills and does most of the damage. Put sculptures into it until it's level 5 before touching skills 2–4.</p>
+        <p class="eg">Exceptions: Baibars wants skills 1 and 2 maxed. Gathering commanders want their gathering skill (Šárka skill 2, Constance skill 4).</p></div>
+      <div><b>Build Epics before Legendaries.</b>
+        <p>Epic sculptures are easy to get from civilization events, keys and shops, and a full Epic costs 440 sculptures. A fully built Epic (5-5-5-5) beats a Legendary stuck at 1-1-1-1. Finish 2–3 Epics in your first month, then start one Legendary.</p></div>
+      <div><b>Never stop a Legendary at 5 stars.</b>
+        <p>Stars raise a commander's level cap by 10 each. Guides advise stopping at 4 stars or pushing all the way to 6, because 5 costs a lot of XP for little gain on its own.</p></div>
+      <div><b>Universal sculptures only on long-term Legendaries.</b>
+        <p>Universal (gold) sculptures work on any Legendary and are very rare. Use them only on the 1–2 Legendaries you'll keep for months, like YSG or your chosen Prime.</p>
+        <p class="eg">Never on commanders you'll get from gold keys anyway (Charles Martel), never on Cleopatra, and never on a Wheel of Fortune commander the first time the Wheel runs.</p></div>
+      <div><b>One troop type for the main.</b>
+        <p>Gear sets, research and talents boost one troop type at a time. Split across infantry, cavalry and archers and you end up with three half-built armies. Pick one (infantry for the China path, cavalry if you started Spain) and build everything around it.</p></div>
+      <div><b>Get the talents right the first time.</b>
+        <p>Each commander has three talent trees, and resetting the points costs gems. Before you spend a point, check that commander's build below.</p></div>
+    </div>
+
+    <h3 id="s-roadmap">Roadmap</h3>
+    <div class="stages">
+      <div class="stage"><div class="when">Weeks 1–4</div><h4>Cornerstones</h4><ul><li>Sun Tzu</li><li>Boudica</li><li>Joan of Arc</li></ul></div>
+      <div class="stage"><div class="when">Weeks 2–8</div><h4>Early fighters</h4><ul><li>Bjorn + Sun Tzu</li><li>Sun Tzu + Aethelflaed</li><li>Baibars + Belisarius</li></ul></div>
+      <div class="stage"><div class="when">Weeks 5–16</div><h4>First Legendary</h4><ul><li>Yi Seong-Gye (YSG)</li><li>Pelagius for cavalry mains</li><li>Ramesses II at 5-5-1-1</li></ul></div>
+      <div class="stage"><div class="when">Week 14+ · KvK</div><h4>One Prime</h4><ul><li>Boudica Prime</li><li>Scipio Prime</li><li>Only in your troop type</li></ul></div>
+    </div>
+
+    <h3 id="s-roster">Commander roster</h3>
+    <div class="grid g3">
+      <div class="cmd E"><div class="top"><h4>Sun Tzu</h4><span class="r E">Epic</span></div><div class="meta"><span class="troop">INF</span><span class="troop">AOE</span><span class="troop">GARRISON</span></div><p class="role">Infantry AoE, rage for partners</p><p>The F2P infantry backbone. Levels with XP and tomes, and can carry a march for a long time.</p></div>
+      <div class="cmd E"><div class="top"><h4>Boudica</h4><span class="r E">Epic</span></div><div class="meta"><span class="troop">PVE</span><span class="troop">SUPPORT</span></div><p class="role">Barbarian hunter, healer</p><p>The best F2P barbarian leader on the Peacekeeping tree. Gives partners rage and healing.</p></div>
+      <div class="cmd E"><div class="top"><h4>Joan of Arc</h4><span class="r E">Epic</span></div><div class="meta"><span class="troop">SUPPORT</span><span class="troop">GATHER</span></div><p class="role">March buffs, gathering</p><p>Easy sculptures from civilization events. Support on the main, gatherer on farms.</p></div>
+      <div class="cmd E"><div class="top"><h4>Bjorn Ironside</h4><span class="r E">Epic</span></div><div class="meta"><span class="troop">INF</span><span class="troop">NUKE</span></div><p class="role">Early infantry damage</p><p>Easy to get free. Max him early and lead with him over Sun Tzu.</p></div>
+      <div class="cmd E"><div class="top"><h4>Baibars</h4><span class="r E">Epic</span></div><div class="meta"><span class="troop">CAV</span><span class="troop">AOE</span></div><p class="role">Cavalry AoE, slows</p><p>The budget cavalry core, as lead or as Pelagius's partner.</p></div>
+      <div class="cmd E"><div class="top"><h4>Belisarius</h4><span class="r E">Epic</span></div><div class="meta"><span class="troop">CAV</span><span class="troop">MOBILITY</span></div><p class="role">Fast cavalry</p><p>Harass, chase, and carry the Ark in Ark of Osiris.</p></div>
+      <div class="cmd L"><div class="top"><h4>Aethelflaed</h4><span class="r L">Legendary</span></div><div class="meta"><span class="troop">INF</span><span class="troop">AOE</span><span class="troop">DEBUFF</span></div><p class="role">AoE nuke, debuffs</p><p>A Legendary F2P can max through the Expedition shop. Pairs with Sun Tzu.</p></div>
+      <div class="cmd L"><div class="top"><h4>Yi Seong-Gye</h4><span class="r L">Legendary</span></div><div class="meta"><span class="troop">AOE</span><span class="troop">ALL-ROUND</span></div><p class="role">The best single F2P investment</p><p>Open field, rallies, barbarians, garrison and Sunset Canyon.</p></div>
+      <div class="cmd L"><div class="top"><h4>Pelagius</h4><span class="r L">Legendary</span></div><div class="meta"><span class="troop">CAV</span><span class="troop">NUKE</span><span class="troop">HEAL</span></div><p class="role">Cavalry nuker</p><p>Spain's starter. Skill order: Charge, then Founder of Asturias. Worth sculptures only for cavalry mains.</p></div>
+    </div>
+
+    <h3 id="s-pairs">Pairs &amp; talents</h3>
+    <div class="tbl"><table>
+      <tr><th>Role</th><th>Lead + partner</th><th>Lead talents</th><th>Notes</th></tr>
+      <tr><td>Infantry field</td><td><b>Bjorn + Sun Tzu</b></td><td>Infantry or Skill</td><td>Bjorn's debuff lands before Sun Tzu's skill.</td></tr>
+      <tr><td>Infantry AoE</td><td><b>Sun Tzu + Aethelflaed</b></td><td>Infantry or Skill</td><td>The classic first pair.</td></tr>
+      <tr><td>Cavalry, budget</td><td><b>Baibars + Belisarius</b></td><td>Cavalry</td><td>Both Epic, cheap to max.</td></tr>
+      <tr><td>Cavalry, Legendary</td><td><b>Pelagius + Baibars</b></td><td>Cavalry: Rejuvenate → Undying Fury → Rallying Cry (+15% damage)</td><td>For Spain or cavalry mains.</td></tr>
+      <tr><td>Archer, early</td><td><b>Hermann + Kusunoki</b> or Osman</td><td>Archer or Skill</td><td>Budget archer line, with the Epic Hermann.</td></tr>
+      <tr><td>Barbarians</td><td><b>Boudica + Sun Tzu</b> (or Lohar)</td><td>Peacekeeping</td><td>Cheaper attacks, fast commander XP. Sun Tzu's AoE hits neighbours.</td></tr>
+      <tr><td>Sunset Canyon / early KvK</td><td><b>Imhotep</b> <span class="r E">Epic</span></td><td>Fit to role</td><td>Strong in Canyon and early KvK.</td></tr>
+      <tr><td>Mid game</td><td><b>YSG + Alexander</b>, later <b>Ramesses II + YSG</b></td><td>Fit to role</td><td>Ramesses comes from Wheel of Fortune.</td></tr>
+      <tr><td>Rally</td><td>Guan Yu + Leonidas</td><td>Rally</td><td>For spenders. F2P members fill rallies.</td></tr>
+      <tr><td>Endgame meta</td><td>Liu Che + Scipio Prime · Zhuge Liang + Hermann Prime · Nevsky + Joan Prime · Sun Tzu Prime + Bai Qi</td><td>Troop / Skill</td><td>S-tier: Arthur Pendragon, Zhuge Liang, Liu Che, Alexander Nevsky, Scipio Prime, Ragnar Prime.</td></tr>
+    </table></div>
+
+    <h3 id="s-builds">Commander builds</h3>
+    <p class="small">Skill order, talents, partners and gear for every commander in our F2P plan. Gear sets are explained in full under Equipment below.</p>
+    <div class="builds">
+
+      <article class="build" style="--rc:var(--epic)">
+        <header><h4>Sun Tzu</h4><span class="r E">Epic</span><span class="troop">INF</span><span class="troop">AOE</span></header>
+        <dl>
+          <dt>Get</dt><dd>China starter. Also from Tavern silver and gold keys.</dd>
+          <dt>Skills</dt><dd>Max <b>Art of War</b> (1) first. Then Master Strategist (3) or Ever-changing Tactics (4). For garrison, take Philosophy of War (2).</dd>
+          <dt>Talents</dt><dd><b>Field:</b> Infantry tree for health. <b>Barbarians:</b> Skill + Infantry trees (Rejuvenate, Undying Fury, Feral Nature, Burning Blood). <b>Garrison:</b> Garrison tree (Impregnable, City Guardian, Know Thy Enemy).</dd>
+          <dt>Partners</dt><dd>Bjorn (Bjorn leads), Aethelflaed or Boudica (Sun Tzu leads), Joan, Scipio, Eulji.</dd>
+          <dt>Gear</dt><dd>Infantry: Windswept set + Gatekeeper's Shield + Karuak's Humility, then Hope Cloak.</dd>
+        </dl>
+      </article>
+
+      <article class="build" style="--rc:var(--epic)">
+        <header><h4>Bjorn Ironside</h4><span class="r E">Epic</span><span class="troop">INF</span><span class="troop">NUKE</span></header>
+        <dl>
+          <dt>Get</dt><dd>Easy to get free. Max him as early as you can.</dd>
+          <dt>Skills</dt><dd><b>Fearless Fighter</b> (1) first. It deals damage and makes the target take more skill damage.</dd>
+          <dt>Talents</dt><dd><b>Survival:</b> Infantry tree (Fleet of Foot, Elite Soldiers). <b>Damage:</b> Skill tree (Rejuvenate, Feral Nature). Skip rally builds.</dd>
+          <dt>Partners</dt><dd>Sun Tzu (best: rage on every hit), Boudica (adds healing), Eulji.</dd>
+          <dt>Gear</dt><dd>Same infantry set as Sun Tzu. Only the lead wears gear.</dd>
+        </dl>
+      </article>
+
+      <article class="build" style="--rc:var(--epic)">
+        <header><h4>Boudica</h4><span class="r E">Epic</span><span class="troop">PVE</span><span class="troop">SUPPORT</span></header>
+        <dl>
+          <dt>Get</dt><dd>Britain starter.</dd>
+          <dt>Skills</dt><dd>Lament of the Insurgent (1) first: damage, lowers enemy rage and attack. Then Group Battle (+20% XP and damage vs barbarians) and Celtic Blood (rage + healing).</dd>
+          <dt>Talents</dt><dd><b>Barbarians and forts:</b> Peacekeeping + Skill. Quick Study, Insight, Killer Instinct, Domination, Mighty Force, Rejuvenate, Feral Nature 5/5.</dd>
+          <dt>Partners</dt><dd>Sun Tzu for barbarian chains. For forts, pair with a nuke commander.</dd>
+          <dt>Gear</dt><dd>Barbarian pieces: <b>Savage Totem</b> (accessory, +10% damage to barbarians), Quinn's Soul (chest, +5%).</dd>
+        </dl>
+      </article>
+
+      <article class="build" style="--rc:var(--epic)">
+        <header><h4>Joan of Arc</h4><span class="r E">Epic</span><span class="troop">SUPPORT</span><span class="troop">GATHER</span></header>
+        <dl>
+          <dt>Get</dt><dd>France starter. Trade civilization-event tokens for her sculptures.</dd>
+          <dt>Skills</dt><dd>Divine Revelation (1) first: buffs allies in range. Saint's Blessing raises gathering speed.</dd>
+          <dt>Talents</dt><dd><b>Main:</b> Support (Rejuvenate, Strategic Prowess, Hidden Strength). <b>Farm:</b> Gathering (Superior Tools, The More the Better, Hasty Departure).</dd>
+          <dt>Partners</dt><dd>Sun Tzu, Aethelflaed, any strong damage lead.</dd>
+          <dt>Gear</dt><dd>On a farm: Harvester's set, then Forest Guardian.</dd>
+        </dl>
+      </article>
+
+      <article class="build" style="--rc:var(--epic)">
+        <header><h4>Baibars</h4><span class="r E">Epic</span><span class="troop">CAV</span><span class="troop">AOE</span></header>
+        <dl>
+          <dt>Get</dt><dd>Arabia starter.</dd>
+          <dt>Skills</dt><dd>Max <b>Sandstorm</b> (1) and <b>Blot Out the Sun</b> (2). Unlock the rest at 4 stars.</dd>
+          <dt>Talents</dt><dd>Skill tree: Rejuvenate → Undying Fury → Feral Nature. Then Cavalry: Emblazoned Shield and Halberd for damage reduction, plus march speed.</dd>
+          <dt>Partners</dt><dd>Aethelflaed (best: his slow powers her Expertise), Belisarius (Belisarius leads for speed), Sun Tzu, Boudica (PvE).</dd>
+          <dt>Gear</dt><dd>Cavalry early: 3 Windswept pieces + Expedition War Helm.</dd>
+        </dl>
+      </article>
+
+      <article class="build" style="--rc:var(--epic)">
+        <header><h4>Belisarius</h4><span class="r E">Epic</span><span class="troop">CAV</span><span class="troop">SPEED</span></header>
+        <dl>
+          <dt>Get</dt><dd>Byzantium starter. Also from gold keys.</dd>
+          <dt>Skills</dt><dd><b>Running:</b> max skill 1, then 4 stars. <b>Barbarians:</b> max skills 1 and 2, then 4 stars.</dd>
+          <dt>Talents</dt><dd><b>Mobility (51% march speed):</b> Thoroughbreds, Lightning Charge, Hasty Departure, Quick Study, Insight. <b>Barbarians:</b> Quick Study, Insight, Disarm, Rallying Cry.</dd>
+          <dt>Partners</dt><dd>Baibars, Pelagius (Pelagius as secondary), Boudica.</dd>
+          <dt>Role</dt><dd>Ark carrier in Ark of Osiris, hunting gatherers. Weak in straight field fights.</dd>
+        </dl>
+      </article>
+
+      <article class="build" style="--rc:var(--legend)">
+        <header><h4>Aethelflaed</h4><span class="r L">Legendary</span><span class="troop">AOE</span><span class="troop">DEBUFF</span></header>
+        <dl>
+          <dt>Get</dt><dd>All her sculptures are in the <b>Expedition shop</b>. The easiest Legendary to max for free.</dd>
+          <dt>Skills</dt><dd>Arrow of Iron (1): hits up to 5 targets, −30% damage, defense and health. Synergy: +35% attack speed and XP vs barbarians. Expertise: +20% damage to slowed enemies.</dd>
+          <dt>Talents</dt><dd><b>Peacekeeper:</b> Quick Study, Trophy Hunter, Fresh Recruits, Rejuvenate, Loose Formation, Cage of Thorns.</dd>
+          <dt>Partners</dt><dd>Sun Tzu (Sun Tzu leads), Baibars, Boudica, Joan.</dd>
+          <dt>Gear</dt><dd>Follows the lead's troop type.</dd>
+        </dl>
+      </article>
+
+      <article class="build" style="--rc:var(--legend)">
+        <header><h4>Yi Seong-Gye</h4><span class="r L">Legendary</span><span class="troop">AOE</span><span class="troop">ALL-ROUND</span></header>
+        <dl>
+          <dt>Get</dt><dd>Gold keys, events, gold heads. The best single F2P investment.</dd>
+          <dt>Skills</dt><dd>Sweet spot <b>5-5-1-5</b>. Rain of Arrows (1) first.</dd>
+          <dt>Talents</dt><dd>Skill tree first (6% march speed, Rejuvenate), then the Archer tree. Keep the march speed nodes.</dd>
+          <dt>Partners</dt><dd>Alexander the Great (full infantry march), Boudica Prime or Nevsky (YSG secondary), El Cid early.</dd>
+          <dt>Gear</dt><dd>Archer: Revival set → Dragon's Breath. Formation: Wedge.</dd>
+        </dl>
+      </article>
+
+      <article class="build" style="--rc:var(--legend)">
+        <header><h4>Pelagius</h4><span class="r L">Legendary</span><span class="troop">CAV</span><span class="troop">NUKE</span></header>
+        <dl>
+          <dt>Get</dt><dd>Spain starter. Legendary sculptures to upgrade.</dd>
+          <dt>Skills</dt><dd>Charge (1) first, then Founder of Asturias (2, cavalry attack and defense).</dd>
+          <dt>Talents</dt><dd><b>Before Tier 5:</b> Skill tree first (Rejuvenate), then Cavalry: Charge → Emblazoned Shield → Undying Fury. Skip Naked Rage. <b>With Tier 5:</b> Rallying Cry first, Undying Fury, then Rejuvenate, Heraldic Shield, Tactical Mastery.</dd>
+          <dt>Partners</dt><dd>Belisarius (strongest, Pelagius as secondary), Sun Tzu, Joan, Baibars.</dd>
+          <dt>Gear</dt><dd>Cavalry: Windswept early → Hellish Wasteland. Formation: Wedge.</dd>
+        </dl>
+      </article>
+    </div>
+
+    <h3 id="s-gear">Equipment</h3>
+    <div class="grid g2">
+      <div class="panel"><div class="lbl">Crafting rules</div><ul>
+        <li>Gear only your <b>primary</b> commander, for one troop type.</li>
+        <li>Build a full Epic set first, then swap to Legendary one slot at a time.</li>
+        <li>Materials combine 4:1, so one Legendary piece needs thousands of commons. Save them.</li>
+        <li>Never craft an unrefined Legendary with no set bonus.</li>
+        <li>Open field: combat stats beat troop load.</li>
+        <li>Blueprints: Blacksmith, Sunset Canyon, Ceroli, Shadow Legion, barbarian camps, VIP shop, KvK.</li>
+      </ul></div>
+      <div class="panel"><div class="lbl">Accessories</div><ul>
+        <li><b>Barbarians:</b> Savage Totem (+10% damage to barbarians).</li>
+        <li><b>Budget KvK:</b> Silent Trial (stops enemy rage) + Delane's Amulet (less skill damage taken).</li>
+        <li><b>Endgame:</b> Horn of Fury, Ring of Doom.</li>
+      </ul></div>
+    </div>
+
+    <div class="tbl" style="margin-top:14px"><table>
+      <tr><th>Troop</th><th>Early (F2P)</th><th>Mid</th><th>Late</th></tr>
+      <tr><td><b>Infantry</b></td><td>Windswept helm, chest, gloves, boots + <b>Gatekeeper's Shield</b> (Sunset Canyon shop) + <b>Karuak's Humility</b> legs</td><td>Witch's Lineage helm, Quinn's Soul chest, <b>Hope Cloak</b> as first Legendary</td><td>Eternal Empire set</td></tr>
+      <tr><td><b>Cavalry</b></td><td>Windswept boots, gloves, chest + Expedition War Helm + Vanguard weapon and legs</td><td>Seth's Brutality chest as a placeholder</td><td>Hellish Wasteland set. Legendary weapon first, boots last.</td></tr>
+      <tr><td><b>Archer</b></td><td>Windswept helm + gloves, Flame Treads or epic boots</td><td><b>Revival</b> set (helm, plate, gauntlets, greaves)</td><td>Dragon's Breath set. Keep 2 Revival pieces.</td></tr>
+    </table></div>
+
+    <div class="tbl"><table>
+      <tr><th>Set</th><th>Rarity</th><th>2 pieces</th><th>4 pieces</th><th>6 pieces</th></tr>
+      <tr><td>Windswept</td><td><span class="r El">Elite</span></td><td>Attack +2%</td><td>March speed +4%</td><td>—</td></tr>
+      <tr><td>Revival</td><td><span class="r E">Epic</span></td><td>Attack +3%</td><td>Defense +3%</td><td>—</td></tr>
+      <tr><td>Eternal Empire (infantry)</td><td><span class="r L">Legendary</span></td><td>Defense +3%</td><td>March speed +10%</td><td>Infantry attack +5%</td></tr>
+      <tr><td>Hellish Wasteland (cavalry)</td><td><span class="r L">Legendary</span></td><td>Health +3%</td><td>Counterattack +3%</td><td>Cavalry defense +5%</td></tr>
+      <tr><td>Dragon's Breath (archer)</td><td><span class="r L">Legendary</span></td><td>Attack +3%</td><td>Skill damage +3%</td><td>Archer health +5%</td></tr>
+      <tr><td>Harvester's (gathering)</td><td><span class="r El">Elite</span></td><td>Gathering speed +10%</td><td>Troop load +20%</td><td>—</td></tr>
+      <tr><td>Forest Guardian (gathering)</td><td><span class="r E">Epic</span></td><td>Troop load +20%</td><td>+5% extra resources</td><td>—</td></tr>
+    </table></div>
+
+    <h3 id="s-formation">Formations &amp; armaments</h3>
+    <div class="grid g3">
+      <div class="panel"><div class="lbl">State Forum</div><p>Upgrade it to <b>level 18</b> for up to 6 dispatches a day. Use every travel and dispatch daily: they drop armaments, inscriptions and Sage's Testimony.</p></div>
+      <div class="panel"><div class="lbl">Formations</div><p><b>Wedge</b> is the default for field marches. <b>Hollow Square</b> is the other common pick. Choose by your commanders.</p></div>
+      <div class="panel"><div class="lbl">Armaments</div><p>Put them on the <b>primary</b> commander. One formation setup can serve several marches. Recycle spares into coins for upgrade materials.</p></div>
+    </div>
+
+    <h3 id="s-sculpt">Sculptures</h3>
+    <div class="grid g2">
+      <div class="panel"><div class="lbl">Cost to finish</div>
+        <div class="tbl" style="margin:0;border:none;background:none"><table style="min-width:0">
+          <tr><th>Goal</th><th>Sculptures</th></tr>
+          <tr><td><span class="r E">Epic</span> fully expertised</td><td class="n">440</td></tr>
+          <tr><td><span class="r L">Legendary</span> fully expertised</td><td class="n">690</td></tr>
+          <tr><td><span class="r L">Legendary</span> skills 1 + 2 maxed</td><td class="n">≈200</td></tr>
+        </table></div>
+        <p class="tip">Prime commanders are their own Legendaries. Epic Sun Tzu, Boudica, Joan and Hermann stay Epic, and their sculptures don't carry over.</p>
+      </div>
+      <div class="panel"><div class="lbl">Gold heads</div><ul>
+        <li>Sources: VIP 10, 12 and 14 shops, gold keys, events, Lost Kingdom shop.</li>
+        <li><b>Save about 700</b> before committing, then max one commander in your troop type.</li>
+        <li>No heads into Richard, Charles Martel or Cao Cao.</li>
+        <li>William or Saladin at <b>5-5-5-1</b> saves about 310 sculptures each.</li>
+        <li>Pick the march first, then the commander.</li>
+      </ul></div>
+    </div>
+
+    <h3 id="s-level">Leveling &amp; troops</h3>
+    <div class="grid g3">
+      <div class="panel"><div class="lbl">Leveling</div><ul>
+        <li>Peacekeeping lowers action points per barbarian, from about 40 down to about 30.</li>
+        <li><b>Never send the army home between kills.</b> The discount resets.</li>
+        <li>Sanctum guardians give big XP and cost no action points.</li>
+        <li>Tomes only on keepers.</li>
+      </ul></div>
+      <div class="panel"><div class="lbl">Gear</div><ul>
+        <li>One set for your troop type, on the primary only.</li>
+        <li>Best quality first. Never craft throwaway pieces.</li>
+        <li>Fighting gear on the main. Gathering gear only goes on farms if materials are spare.</li>
+      </ul></div>
+      <div class="panel"><div class="lbl">Troops</div><ul>
+        <li>Tier 4 is the F2P workhorse.</li>
+        <li>Delay Tier 5. It eats gold.</li>
+        <li><b>Upgrade existing troops</b> to the next tier instead of training new ones.</li>
+        <li>Extra training speedups go into Mightiest Governor.</li>
+      </ul></div>
+    </div>
+
+    <details class="treasury"><summary><span class="coin">💰</span>Treasury · for low &amp; budget spenders<span class="chev">▸</span></summary><div class="body">
+      <div class="tbl"><table>
+        <tr><th>#</th><th>Buy</th><th>Why</th></tr>
+        <tr><td class="n">1</td><td><b>VIP push</b> to 10, then 12</td><td>VIP 10 speeds up a Legendary. VIP 12 gives 2 Legendary sculptures daily.</td></tr>
+        <tr><td class="n">2</td><td>Packs for your <b>one</b> chosen Legendary</td><td>Maxed beats spread.</td></tr>
+        <tr><td class="n">3</td><td>Growth or builder packs early</td><td>Time saved compounds.</td></tr>
+        <tr><td class="n">4</td><td>Premium Season Crystal Supply</td><td>Same price as a 30-day gem supply. 3M crystals over 50 days plus instant crystal research.</td></tr>
+        <tr><td class="n">5</td><td>Equipment materials before KvK</td><td>A big fighting multiplier.</td></tr>
+        <tr><td class="n">✕</td><td>Resource packs, random speedups, Richard / Charles Martel / Cao Cao packs, a second troop type</td><td>Low value or split focus.</td></tr>
+      </table></div>
+    </div></details>
+  </section>
+
+  <!-- ================= 04 ================= -->
+  <section class="ch" id="economy">
+    <div class="banner"><div class="seal">04</div><div><h2>Gems &amp; Resources</h2><p>Where free value comes from, and the strict order it gets spent in.</p></div></div>
+
+    <h3 id="s-gems">Gems</h3>
+    <div class="grid g2">
+      <div class="panel"><div class="lbl">Earn · biggest first</div><ol>
+        <li><b>Gem deposits on the map.</b> Gather on the main every day with Constance. Keep 1–2 armies on gems full time.</li>
+        <li>Daily quests + 4 activity chests on all 3 accounts.</li>
+        <li>Lyceum of Wisdom quiz. Use an answer list.</li>
+        <li>Events: More than Gems quests, Ark of Osiris, Sunset Canyon, Expedition.</li>
+        <li>Achievements and chapter quests.</li>
+        <li>Gift codes, posted in #codes.</li>
+      </ol></div>
+      <div class="panel"><div class="lbl">Spend · strict order</div><ol>
+        <li><b>VIP 6</b>: permanent second builder.</li>
+        <li><b>VIP up</b> toward 10, then 12. VIP also adds gathering speed.</li>
+        <li><b>More than Gems</b>: save for it and buy discounted speedups there.</li>
+        <li>VIP shop 8h / 24h speedups.</li>
+        <li>Wheel of Fortune, only if its commander is in your plan.</li>
+        <li>Books of Covenant, only for a core commander or a deadline.</li>
+      </ol><p class="tip warn">Never spend gems on shop refreshes, resource top-ups, "finish now" buttons, or on farms.</p></div>
+    </div>
+
+    <h3 id="s-rss">Resources</h3>
+    <div class="grid g3">
+      <div class="panel"><div class="lbl">Tokens</div><p>Never open resource tokens in peacetime. Save them for Mightiest Governor, KvK healing and City Hall pushes.</p></div>
+      <div class="panel"><div class="lbl">Keep it low</div><p>Resources above storehouse protection can be scouted and raided. Transfer right before you spend.</p></div>
+      <div class="panel"><div class="lbl">Gold is the wall</div><p>Tier 5 eats gold. The main stockpiles it months before KvK. Zero only inactive cities, with leadership's OK.</p></div>
+    </div>
+    <p class="tip">Visit the Courier Station daily for discounted speedups and materials. At the Courier Station and Mysterious Merchant, pay with resources, never gems.</p>
+
+    <h3 id="s-keys">Keys &amp; shops</h3>
+    <div class="tbl"><table>
+      <tr><th>Source</th><th>Rule</th></tr>
+      <tr><td>Silver keys</td><td>Open daily.</td></tr>
+      <tr><td><b>Gold keys</b></td><td>The best F2P route to Legendary sculptures. Save them and open in bulk when an event or achievement rewards openings.</td></tr>
+      <tr><td>Expedition shop</td><td>Coins buy <b>Aethelflaed</b>. Max her.</td></tr>
+      <tr><td>Sunset Canyon</td><td>All 5 fights daily. Even losses earn coins toward equipment blueprints. Spend the shop on core commanders.</td></tr>
+      <tr><td>Ark of Osiris</td><td>Legendary sculptures for wins and losses. Play every round.</td></tr>
+    </table></div>
+
+    <h3 id="s-speedups">Speedups</h3>
+    <div class="tbl"><table>
+      <tr><th>Type</th><th>Use on</th><th>Never on</th></tr>
+      <tr><td>Building</td><td>City Hall and prerequisites, Lotus day 7, Mightiest Governor power stage</td><td>Small side buildings</td></tr>
+      <tr><td>Research</td><td>Core economy early, troop and healing research before KvK</td><td>Junk nodes</td></tr>
+      <tr><td>Training</td><td>Mightiest Governor training stage, KvK prep</td><td>Everyday training</td></tr>
+      <tr><td>Healing</td><td>KvK</td><td>Peacetime</td></tr>
+      <tr><td>Universal</td><td>Last: City Hall or emergencies</td><td>Anything alliance help could finish</td></tr>
+    </table></div>
+    <div class="grid g3">
+      <div class="panel"><div class="lbl">Rule 1</div><p>Ask for alliance help first.</p></div>
+      <div class="panel"><div class="lbl">Rule 2</div><p>Spend only inside an event that scores it.</p></div>
+      <div class="panel"><div class="lbl">Rule 3</div><p>Plan from the event calendar, which shows 4 days ahead.</p></div>
+    </div>
+
+    <details class="treasury"><summary><span class="coin">💰</span>Treasury · for low &amp; budget spenders<span class="chev">▸</span></summary><div class="body"><ol>
+      <li><b>30-day gem supply</b> every month: the best gems per euro.</li>
+      <li>First-purchase double bonus on gem packs.</li>
+      <li>VIP-point packs when close to VIP 10 or 12.</li>
+      <li>Skip resource packs (farms make those) and speedup bundles outside More than Gems value.</li>
+    </ol></div></details>
+  </section>
+
+  <!-- ================= 05 ================= -->
+  <section class="ch" id="farms">
+    <div class="banner"><div class="seal">05</div><div><h2>Farm Accounts</h2><p>Gather, hold, transfer. A farm that eats your time is slowing the main.</p></div></div>
+
+    <h3 id="s-farmjob">Role &amp; setup</h3>
+    <div class="tbl"><table>
+      <tr><th>Job</th><th>Farm 1 · active</th><th>Farm 2 · lazy</th></tr>
+      <tr><td>Gather and ship to main</td><td>Every login</td><td>2–3 times a day</td></tr>
+      <tr><td>Mightiest Governor points</td><td>Yes</td><td>Yes</td></tr>
+      <tr><td>Barbarian honor for the alliance</td><td>Yes</td><td>Optional</td></tr>
+      <tr><td>KvK troops that take the losses</td><td>Yes</td><td>Yes</td></tr>
+      <tr><td>Lead fights or rallies</td><td>Never</td><td>Never</td></tr>
+    </table></div>
+    <div class="grid g2">
+      <div class="panel"><div class="lbl">How far to level</div><ol>
+        <li>City Hall to 4–5 armies (5 at City Hall 22).</li>
+        <li>Trading Post up: it caps what each transfer can send.</li>
+        <li>Storehouse for protection.</li>
+        <li>City Hall 16 so the farm can follow into the Lost Kingdom.</li>
+        <li>Economy research only: gathering, load, production.</li>
+        <li>Cheap, high-load troops. No fancy tiers.</li>
+      </ol></div>
+      <div class="panel"><div class="lbl">Who gathers what</div>
+        <p><b>Gems → main only.</b> Gems can't be transferred.</p>
+        <p><b>Gold → main.</b> Better commanders and tech, no transfer tax, and Tier 5 eats gold.</p>
+        <p><b>Food · wood · stone → farms.</b> Shipped to the main through the Trading Post.</p>
+      </div>
+    </div>
+
+    <h3 id="s-gatherers">Gathering commanders</h3>
+    <div class="grid g3">
+      <div class="cmd El"><div class="top"><h4>Constance</h4><span class="r El">Elite</span></div><div class="meta"><span class="troop">GEMS</span><span class="troop">DEPOSITS</span></div><p class="role">The best all-round gatherer</p><p>Level 30 → skills → max skill 4. Universal sculptures are fine here.</p></div>
+      <div class="cmd El"><div class="top"><h4>Šárka</h4><span class="r El">Elite</span></div><div class="meta"><span class="troop">ANY RSS</span></div><p class="role">Any resource</p><p>Level 10, 2★ → max skill 2 before 4★.</p></div>
+      <div class="cmd El"><div class="top"><h4>Gaius Marius</h4><span class="r El">Elite</span></div><div class="meta"><span class="troop">FOOD</span></div><p class="role">Food, +20% speed</p><p>Level 10, 2★, max skill 2 → level 20, 3★, max skill 3.</p></div>
+      <div class="cmd El"><div class="top"><h4>Centurion</h4><span class="r El">Elite</span></div><div class="meta"><span class="troop">GENERAL</span></div><p class="role">General gathering</p><p>Level 20 → max skill 3.</p></div>
+      <div class="cmd E"><div class="top"><h4>Joan of Arc</h4><span class="r E">Epic</span></div><div class="meta"><span class="troop">SPEED</span><span class="troop">LOAD</span></div><p class="role">Speed and load from skill 2</p><p>Trade civilization-event tokens for her sculptures.</p></div>
+      <div class="cmd L"><div class="top"><h4>Seondeok · Cleopatra · Ishida</h4><span class="r L">Legendary</span></div><div class="meta"><span class="troop">GOLD</span><span class="troop">STONE</span><span class="troop">FOOD</span></div><p class="role">Use only if they come free</p><p>Cleopatra: +30% stone speed, +50% load. Never universal sculptures on her.</p></div>
+    </div>
+    <div class="grid g3" style="margin-top:14px">
+      <div class="panel"><div class="lbl">Level milestones</div><p><b>Lv 27:</b> gathering skill that brings back extra resources.<br><b>Lv 37:</b> full Gathering tree, including superior tools (about +25%).</p></div>
+      <div class="panel"><div class="lbl">Talents</div><p>Full <b>Gathering tree</b> on every gatherer. Each army has its own gathering primary. Gathering talents don't stack in one march.</p></div>
+      <div class="panel"><div class="lbl">Deposit pairs</div><p><b>Constance + Šárka</b> or <b>Constance + Joan</b> for alliance resource points.</p></div>
+    </div>
+
+    <h3 id="s-gathergear">Gathering gear</h3>
+    <div class="grid g2">
+      <div class="panel"><div class="lbl">Harvester's set · Elite</div><p>Headscarf, Robes, Breeches, Boots. <b>2 pieces:</b> gathering speed +10%. <b>4 pieces:</b> troop load +20%. Craft this first on every farm.</p></div>
+      <div class="panel"><div class="lbl">Forest Guardian set · Epic</div><p>Scepter, Mask, Robe, Claws. <b>2 pieces:</b> troop load +20%. <b>4 pieces:</b> +5% extra resources gathered. Upgrade once materials are spare.</p></div>
+    </div>
+    <p class="tip">Gear goes on each farm's gathering lead (Constance, Šárka, Joan). Never use fighting materials on farms.</p>
+
+    <h3 id="s-speed">Gathering speed</h3>
+    <div class="tbl"><table>
+      <tr><th>Source</th><th>Bonus</th></tr>
+      <tr><td>Gathering inside alliance territory</td><td class="n"><b>+25%</b></td></tr>
+      <tr><td>Superior tools (gathering tree, level 37)</td><td class="n">≈ +25%</td></tr>
+      <tr><td>Queen title / Saint title (requested by R4)</td><td class="n">+15% / +10%</td></tr>
+      <tr><td>Gathering sanctum</td><td class="n">+5%</td></tr>
+      <tr><td>Shrine of Honor</td><td class="n">+5%</td></tr>
+      <tr><td>Gathering rune on the map</td><td>Pick one up before sending troops</td></tr>
+      <tr><td>VIP level and economy research</td><td>Grows with every level</td></tr>
+    </table></div>
+    <p class="tip">Check your total gathering bonus in City Hall → stats (graph icon) → Gathering.</p>
+
+    <h3 id="s-farmloop">Daily loop · 5 minutes per farm</h3>
+    <div class="grid g2">
+      <div class="panel"><ol>
+        <li><b>Collect</b> the resources your city buildings produced (tap the icons above them).</li>
+        <li><b>Send every army out:</b> pick up a gathering rune if one is nearby, then send each army to the highest-level resource tile <b>inside alliance territory</b>.</li>
+        <li><b>Transfer to the main:</b> open the <b>Trading Post</b>, choose your main from the alliance list, pick the resources and send. Send only what the main needs for its next upgrades: resources sitting on the main can be raided.</li>
+        <li><b>Dailies:</b> finish the daily quests and open the 4 activity chests. They give gems and keys on farms too.</li>
+        <li><b>Alliance:</b> tap help on allies' timers and donate to alliance tech. Put a shield up if a war is near.</li>
+      </ol></div>
+      <div class="panel"><div class="lbl">Farms in events</div><ul>
+        <li><b>Mightiest Governor:</b> training and gathering points. In the kill stage, run the hospital loop: attack your farm with your weakest commander and up to 10k troops, heal, repeat.</li>
+        <li><b>KvK:</b> join the main alliance, take the losses, hunt level 25+ barbarians for honor.</li>
+      </ul><p class="tip warn">Never put fighting gear, big stockpiles or gems on farms, and never gather outside alliance territory.</p></div>
+    </div>
+
+    <details class="treasury"><summary><span class="coin">💰</span>Treasury · for low &amp; budget spenders<span class="chev">▸</span></summary><div class="body">
+      <p><b>Almost nothing.</b> At most one Constance pack for the main's gem gathering, or a gathering-boost pack during a gathering event. Every euro does more on the main.</p>
+    </div></details>
+  </section>
+
+  <!-- ================= 06 ================= -->
+  <section class="ch" id="events">
+    <div class="banner"><div class="seal">06</div><div><h2>Events</h2><p>Events repeat 1–3 months apart with no fixed schedule. Check the calendar (4 days ahead) daily, and save for S-tier events.</p></div></div>
+
+    <h3 id="s-tiers">Tier list</h3>
+    <div class="tbl"><table>
+      <tr><th>Tier</th><th>Event</th><th>Main reward</th><th>Who plays</th></tr>
+      <tr><td><span class="tier S">S</span></td><td><b>Mightiest Governor</b></td><td>Legendary sculptures by rank, choice of commander</td><td>Main + farms</td></tr>
+      <tr><td><span class="tier S">S</span></td><td><b>More than Gems</b></td><td>Discounted speedups + quest rewards</td><td>Main</td></tr>
+      <tr><td><span class="tier S">S</span></td><td><b>Lost Kingdom / KvK</b></td><td>Kingdom glory, huge rewards, crystals</td><td>Everyone</td></tr>
+      <tr><td><span class="tier A">A</span></td><td>Ark of Osiris</td><td>Legendary sculptures (win and loss), gems</td><td>30-player team</td></tr>
+      <tr><td><span class="tier A">A</span></td><td>Seasonal festivals</td><td>Up to 35 Legendary sculptures</td><td>All accounts</td></tr>
+      <tr><td><span class="tier A">A</span></td><td>Ceroli Crisis / Assault</td><td>Team PvE rewards</td><td>Fixed squads</td></tr>
+      <tr><td><span class="tier A">A</span></td><td>Lord of War / power events</td><td>Speedups and sculptures for power gains</td><td>Main</td></tr>
+      <tr><td><span class="tier B">B</span></td><td>Golden Kingdom · Shadow Legion · Dark Fortress</td><td>Dungeon and defense rewards</td><td>Main</td></tr>
+      <tr><td><span class="tier B">B</span></td><td>Alliance Mobilization</td><td>Alliance quest competition</td><td>Everyone, coordinated</td></tr>
+      <tr><td><span class="tier B">B</span></td><td>Trial of Kau Karuak</td><td>Millions of crystals (Season of Conquest)</td><td>Main</td></tr>
+      <tr><td><span class="tier D">DAILY</span></td><td>Expedition · Sunset Canyon · Lohar's Trial · Lyceum</td><td>Sculptures, coins, gems</td><td>Main</td></tr>
+    </table></div>
+
+    <h3 id="s-mge">Mightiest Governor</h3>
+    <p>Save speedups, tokens and the gathering setup <b>weeks to months ahead</b>. On a server full of Tier 5 spenders, aim for a realistic top-50 slot. Spend the stockpile in stages 1–5. The final sprint is where spenders buy ranks.</p>
+    <div class="grid g3">
+      <div class="panel"><div class="lbl">Stage 1 · Training</div><p>Higher tier, more points. Time a big batch to finish right after the stage opens. Training rune, War shrine (+10%), Duke title, kingdom buffs.</p></div>
+      <div class="panel"><div class="lbl">Stage 2 · Barbarians</div><p>Higher level, more points. Peacekeeping lead (Boudica or Lohar) + AoE secondary (Sun Tzu or YSG). Never return home between kills.</p></div>
+      <div class="panel"><div class="lbl">Stage 3 · Gathering</div><p>Gold scores the most. 2–3 days before, send max-load gatherers on gold and keep them out. Recall when the stage opens, then send again.</p></div>
+      <div class="panel"><div class="lbl">Stage 4 · Power</div><p>Buildings, research and troops. Pre-stage big upgrades. The goldmine is the best-value building here.</p></div>
+      <div class="panel"><div class="lbl">Stage 5 · Kills</div><p>Real fights are expensive. F2P route: inactive cities with catapults, the farm hospital loop, alliance members sending troops.</p></div>
+      <div class="panel"><div class="lbl">Stage 6 · Final sprint</div><p>48 hours. Everything counts, at lower value. Your stockpile should already be spent.</p></div>
+    </div>
+
+    <h3 id="s-aoo">Ark of Osiris</h3>
+    <div class="grid g2">
+      <div class="panel"><div class="lbl">Format &amp; prep</div>
+        <p>Two alliances, about <b>30 players each</b>, roughly every two weeks. Capture buildings and the Ark for points.</p>
+        <ul>
+          <li>Clear your hospital.</li>
+          <li>Use an <b>attack</b> buff, not defense.</li>
+          <li>Turn on <b>at least 25% army expansion</b>.</li>
+          <li>Troop capacity on, gear on, marches pre-set.</li>
+        </ul>
+      </div>
+      <div class="panel"><div class="lbl">Play</div><ul>
+        <li>Three lanes: Ark in the middle, buildings top and bottom.</li>
+        <li>Stage ~3 minutes from the Ark, then fight as one group.</li>
+        <li>Max 3 marches each: one per building, one at the obelisk.</li>
+        <li>Teleport in waves (A/B).</li>
+        <li>Pick up the Ark only from our side.</li>
+        <li>Follow the caller.</li>
+      </ul></div>
+    </div>
+    <div class="tbl" style="margin-top:14px"><table>
+      <tr><th>Role</th><th>Who</th><th>Job</th></tr>
+      <tr><td>Ark carriers (1–2)</td><td>Fastest cavalry (Belisarius)</td><td>Grab the Ark from our side</td></tr>
+      <tr><td>Rally leaders</td><td>Strongest commanders</td><td>Rally enemy buildings</td></tr>
+      <tr><td>Garrison</td><td>Defensive commanders</td><td>Hold our buildings, especially the back ones</td></tr>
+      <tr><td>Gatherers</td><td>Joan, Šárka, Constance</td><td>Supply and caravan points, a big share of the score</td></tr>
+      <tr><td>Fillers</td><td>Lower-power members</td><td>Fill rallies and garrisons, buff and debuff in the middle</td></tr>
+    </table></div>
+
+    <h3 id="s-calendar">Calendar habits</h3>
+    <ul class="tips">
+      <li>An officer posts the 4-day calendar in #events every Monday and Thursday.</li>
+      <li>"Save" call 7–14 days before every S-tier event: no speedups, no tokens.</li>
+      <li>Ceroli: fixed squads of 3–5 from the same timezone.</li>
+      <li>A short results recap after each event.</li>
+    </ul>
+
+    <details class="treasury"><summary><span class="coin">💰</span>Treasury · for low &amp; budget spenders<span class="chev">▸</span></summary><div class="body">
+      <div class="tbl"><table>
+        <tr><th>Event</th><th>Smart spend</th><th>Why</th></tr>
+        <tr><td>Mightiest Governor</td><td>Only for a reachable rank. Speedup packs for <b>one</b> stage.</td><td>Spreading money across 6 stages buys nothing.</td></tr>
+        <tr><td>Seasonal festivals</td><td>Festival pass or sculpture packs for your core Legendary</td><td>Up to 35 Legendary sculptures</td></tr>
+        <tr><td>Wheel of Fortune</td><td>Only if its commander is your plan</td><td>Otherwise a gem sink</td></tr>
+        <tr><td>Ark of Osiris</td><td>Nothing</td><td>Coordination wins it.</td></tr>
+        <tr><td>More than Gems</td><td>A gem pack bought just before it</td><td>Gems go further during the event</td></tr>
+      </table></div>
+    </div></details>
+  </section>
+
+  <!-- ================= 07 ================= -->
+  <section class="ch" id="alliance">
+    <div class="banner"><div class="seal">07</div><div><h2>Alliance &amp; Conquest</h2><p>Ranks, tech, territory, holy sites, zones and the road to the Lost Temple.</p></div></div>
+
+    <h3 id="s-ranks">Ranks &amp; recruiting</h3>
+    <div class="tbl"><table>
+      <tr><th>Rank</th><th>Who</th><th>Job</th></tr>
+      <tr><td class="n"><b>R5</b></td><td>Leader</td><td>Diplomacy, final calls, strategy</td></tr>
+      <tr><td class="n"><b>R4</b></td><td>3–6 officers</td><td>One each: War, Events &amp; Ark, Recruitment, Diplomacy, Economy. R4 requests gathering titles for members.</td></tr>
+      <tr><td class="n"><b>R3</b></td><td>Trusted actives</td><td>Fill rallies, run squads, mentor recruits</td></tr>
+      <tr><td class="n"><b>R2</b></td><td>Members</td><td>Daily routine, follow calls</td></tr>
+      <tr><td class="n"><b>R1</b></td><td>Recruits</td><td>Promoted after 1–2 weeks of activity</td></tr>
+    </table></div>
+    <div class="grid g2">
+      <div class="panel"><div class="lbl">Recruiting</div><ul>
+        <li>Before launch: the core 10–15 in Discord.</li>
+        <li>Days 1–14: recruit every active player in new-kingdom chat, whatever their power.</li>
+        <li>Each recruit gets this codex, the rules and an R3 mentor.</li>
+      </ul></div>
+      <div class="panel"><div class="lbl">Activity check</div><p>Weekly review of power growth, help given and tech donations. 7+ days inactive without notice → moved down or out. A tight active alliance beats a big dead one.</p></div>
+    </div>
+
+    <h3 id="s-tech">Tech &amp; territory</h3>
+    <div class="grid g2">
+      <div class="panel"><div class="lbl">Alliance technology</div><p>Research in the order of the full list below: <b>growth → territory → economy → war</b>. Officers star one tech at a time and everyone donates to it.</p><p class="tip">Full ordered list: see Alliance technology, just below.</p></div>
+      <div class="panel"><div class="lbl">Territory</div><p>The <b>Alliance Center</b> anchors your zone. <b>Flags</b> expand toward resource tiles, holy sites and the province's passes.</p><p>Territory gives <b>+25% gathering</b>, fills alliance storage, blocks enemy teleports and links you to passes and holy sites.</p></div>
+    </div>
+
+
+    <h3 id="s-alliancetech">Alliance technology: research order</h3>
+    <p>Alliance tech helps every member at once, so the order matters. Work through the four phases top to bottom. <b>Officers put the recommendation star on one tech at a time</b>, members donate only to the starred tech, and the star moves to the next line when it's done.</p>
+    <div class="tbl"><table>
+      <tr><th>#</th><th>Tech</th><th>Branch</th><th>What it does</th><th>Level target</th></tr>
+      <tr><td colspan="5"><b>Phase 1 · Growth</b> <span class="small">· weeks 1–2</span></td></tr>
+      <tr><td class="n">1</td><td><b>Great Alliance I</b></td><td>Development</td><td>More members allowed in the alliance</td><td><b>Max</b> before anything else</td></tr>
+      <tr><td class="n">2</td><td><b>Together We Rise</b></td><td>Development</td><td>More alliance helps on every timer</td><td><b>Max</b></td></tr>
+      <tr><td class="n">3</td><td><b>Architecture I</b></td><td>Development</td><td>Faster building for every member</td><td><b>Max</b></td></tr>
+      <tr><td class="n">4</td><td><b>Great Alliance II</b></td><td>Development</td><td>Even more member capacity</td><td><b>Max</b> as soon as we're close to the member cap</td></tr>
+      <tr><td colspan="5"><b>Phase 2 · Territory</b> <span class="small">· weeks 2–6</span></td></tr>
+      <tr><td class="n">5</td><td><b>Flag Quantity I</b></td><td>Territory</td><td>More alliance flags, so more territory</td><td><b>Max</b> before we claim the province</td></tr>
+      <tr><td class="n">6</td><td><b>Storehouse Expansion I</b></td><td>Development</td><td>Bigger storehouse protection for members</td><td><b>Max</b></td></tr>
+      <tr><td class="n">7</td><td><b>Flag Quantity II</b></td><td>Territory</td><td>Even more flags</td><td><b>Max</b> when the flag limit blocks expansion</td></tr>
+      <tr><td colspan="5"><b>Phase 3 · Economy</b> <span class="small">· weeks 4–10</span></td></tr>
+      <tr><td class="n">8</td><td><b>Technology Research I</b></td><td>Development</td><td>Faster Academy research for every member</td><td><b>Max</b></td></tr>
+      <tr><td class="n">9</td><td><b>Gathering speed: food, wood, stone</b></td><td>Development</td><td>Faster gathering, one tech per resource</td><td><b>Max</b> food and wood first, then stone</td></tr>
+      <tr><td class="n">10</td><td><b>Gathering speed: gold</b></td><td>Development</td><td>Faster gold gathering</td><td><b>Max</b> before the first KvK, when Tier 4 and healing need gold</td></tr>
+      <tr><td colspan="5"><b>Phase 4 · War</b> <span class="small">· ≈ weeks 8–14, before the first KvK</span></td></tr>
+      <tr><td class="n">11</td><td><b>Attack &amp; defense for our main troop type</b></td><td>War</td><td>Stronger troops for every member</td><td><b>Max</b> our main type (infantry) first, then the others</td></tr>
+      <tr><td class="n">12</td><td><b>Assembly Charge I</b></td><td>War</td><td>Bigger rallies</td><td><b>Max</b> once our rally leaders are set</td></tr>
+      <tr><td class="n">13</td><td><b>Garrison, burning and repair techs</b></td><td>War / Territory</td><td>Stronger defense of cities and alliance buildings</td><td>Only if we fight territory wars often</td></tr>
+    </table></div>
+    <p class="tip">"Max" means finish every level of that tech before moving the star. The game shows each tech's level count when you tap it, so officers check it there.</p>
+    <p class="tip warn">Don't start war techs early. Before KvK, growth and economy techs help every member every day. Troop stats only matter in fights.</p>
+
+    <div class="grid g2" style="margin-top:14px">
+      <div class="panel"><div class="lbl">How donating works</div><ul>
+        <li>Each member has up to <b>20 donation attempts</b> stored, and gets 1 back every <b>30 minutes</b>.</li>
+        <li>Log in a few times a day so the attempts never sit full and go to waste.</li>
+        <li>Donate to the <b>starred</b> tech: it gives bonus points and finishes faster.</li>
+        <li>Tech costs alliance resources, which come from gathering <b>alliance resource points</b> in our territory (Constance + Šárka or Joan).</li>
+      </ul></div>
+      <div class="panel"><div class="lbl">Alliance credits</div><ul>
+        <li>You earn credits from donating, building flags, helping timers and joining barbarian fort rallies.</li>
+        <li>Spend them in the <b>Alliance Shop</b>: targeted teleports, peace shields, talent reset scrolls.</li>
+        <li>Alliance <b>skills</b> are activated by R4/R5 when needed (war, growth or gathering) and members donate toward them.</li>
+      </ul></div>
+    </div>
+
+    <h3 id="s-holy">Holy sites</h3>
+    <p class="tip">Sites are contested every 3 days, the Lost Temple every 7. Buffs of the same type don't stack, so hold one of each type.</p>
+    <div class="grid g3">
+      <div class="panel"><div class="lbl">Zone 1 · Altars</div><ul>
+        <li><b>Building +5%</b> <span class="tier S" style="width:auto;height:auto;padding:0 6px;font-size:11px">FIRST</span></li>
+        <li><b>Research +5%</b> <span class="tier S" style="width:auto;height:auto;padding:0 6px;font-size:11px">FIRST</span></li>
+        <li>Training +5%</li>
+        <li>Resource production +10%</li>
+        <li>Attack +3% · Defense +3%</li>
+      </ul></div>
+      <div class="panel"><div class="lbl">Zone 1 · Sanctums</div><ul>
+        <li><b>Commander XP +10%</b> <span class="tier S" style="width:auto;height:auto;padding:0 6px;font-size:11px">FIRST</span></li>
+        <li><b>Gathering +5%</b> <span class="tier S" style="width:auto;height:auto;padding:0 6px;font-size:11px">FIRST</span></li>
+        <li>March speed +5%</li>
+        <li>Troop health +2%</li>
+      </ul></div>
+      <div class="panel"><div class="lbl">Zone 2 · Shrines</div><ol>
+        <li><b>Radiance</b>: AP recovery +20%, healing +20%</li>
+        <li><b>War</b>: attack +3%, training +10%</li>
+        <li><b>Honor</b>: rally attack +5%, gathering +5%</li>
+        <li><b>Order</b>: defense +3%, health +3%</li>
+      </ol></div>
+    </div>
+    <div class="panel" style="margin-top:14px;border-color:var(--gold-lo)"><div class="lbl">Zone 3 · Lost Temple</div><p>Whoever holds it makes their leader <b>King</b>. The King gives titles, daily kingdom-wide buffs (building, research, training, production) and weekly gifts, and chooses the KvK story. <b>This is the goal.</b></p></div>
+
+    <h3 id="s-zones">Kingdom zones: how we move through them</h3>
+    <p>The home kingdom is three zones in rings, joined only by <b>passes</b>. Passes open in stages as the kingdom ages: that is what opens Zone 2, then Zone 3. Watch the in-game calendar for the exact timing: the weeks below are our estimate. Each zone has one objective for us.</p>
+    <div class="tbl"><table>
+      <tr><th>Zone</th><th>What's there</th><th>Our objective</th><th>We move on when…</th></tr>
+      <tr><td><b>Zone 1</b><br><span class="small">outer ring · weeks 1–8</span></td><td>Several provinces split by mountains and rivers. Altars and sanctums. Lowest-level tiles and barbarians.</td><td><b>Own one province.</b> Hold all its passes, one altar and one sanctum of each useful type, and settle every member inside our territory.</td><td>Our province is stable, we have 15–20+ actives, and the Zone 2 passes are opening.</td></tr>
+      <tr><td><b>Zone 2</b><br><span class="small">middle ring · ≈ weeks 8–14</span></td><td>Richer tiles, stronger barbarians. The 9 shrines: Radiance, War, Honor, Order.</td><td><b>Hold Radiance and War shrines</b> (healing, action points, training). Plant flags toward the next pass. Move our strongest gatherers to Zone 2 tiles.</td><td>We hold 2+ shrines through several 3-day cycles, and the Zone 3 pass is open.</td></tr>
+      <tr><td><b>Zone 3</b><br><span class="small">centre · ≈ week 12+</span></td><td>The Lost Temple and the best resources in the kingdom.</td><td><b>Take the Temple only if we can hold a full 7-day cycle.</b> Otherwise negotiate titles and a fair split of sites with whoever holds it.</td><td>KvK approaches: the whole kingdom unites, internal wars stop.</td></tr>
+    </table></div>
+
+    <div class="grid g3" style="margin-top:14px">
+      <div class="panel"><div class="lbl">Taking a pass</div><ol>
+        <li>Scout the pass guardians and check our rally power.</li>
+        <li>Rally leaders with the strongest commanders. Everyone else fills.</li>
+        <li>Hit in waves until it falls, then link it to our territory with flags.</li>
+        <li>Garrison it with defensive commanders.</li>
+      </ol></div>
+      <div class="panel"><div class="lbl">Moving the alliance</div><ul>
+        <li>Plant flags and the new Alliance Center <b>before</b> anyone moves.</li>
+        <li>Teleport members in one wave, as a tight cluster.</li>
+        <li>Farms move last. They gather wherever territory covers.</li>
+        <li>Keep our old pass until the new area is secure.</li>
+      </ul></div>
+      <div class="panel"><div class="lbl">Diplomacy per zone</div><ul>
+        <li><b>Zone 1:</b> non-aggression pacts with the top 1–2 alliances.</li>
+        <li><b>Zone 2:</b> share shrines by type with one ally rather than fight for all.</li>
+        <li><b>Zone 3:</b> agree on who rules before KvK. A split kingdom loses KvK.</li>
+      </ul></div>
+    </div>
+
+    <h3 id="s-province">Taking a province</h3>
+    <p>Owning a whole province is how our alliance becomes safe and rich. We take one in stages, in the right spot, at the right time: <b>target weeks 4–8</b>, after the core is recruited and member-capacity tech is done.</p>
+    <div class="grid g2">
+      <div class="panel"><div class="lbl">What we gain</div><ul>
+        <li><b>Safe gathering:</b> every member farms inside territory, with +25% gathering speed and almost no raids.</li>
+        <li><b>Every local holy site:</b> the altars and sanctums inside are ours to hold.</li>
+        <li><b>Closed borders:</b> with every pass held, enemies can't march in, and our territory blocks their teleports.</li>
+        <li><b>A home base:</b> members grow in peace before KvK, and recruits want to join an alliance that owns an area.</li>
+      </ul></div>
+      <div class="panel"><div class="lbl">What it costs</div><ul>
+        <li><b>Defense:</b> holy sites are contested every 3 days, so we need people online across timezones.</li>
+        <li><b>Flags:</b> territory grows with flags, and our flag limit grows with alliance size and tech. Don't claim more than we can cover.</li>
+        <li><b>Attention:</b> the top alliance may see a full province as a threat.</li>
+        <li><b>Spread:</b> cities spread across a big area are harder to protect in a war than one tight cluster.</li>
+      </ul></div>
+    </div>
+
+    <div class="tbl" style="margin-top:14px"><table>
+      <tr><th>Step</th><th>Action</th><th>Why</th></tr>
+      <tr><td class="n"><b>1</b></td><td><b>Pick the province with the fewest passes</b>, ideally a Zone 1 corner away from the strongest alliance</td><td>Fewer gates to defend</td></tr>
+      <tr><td class="n"><b>2</b></td><td><b>Claim the core:</b> Alliance Center, the best resource tiles, member cities in one cluster</td><td>Members gather safely from day one</td></tr>
+      <tr><td class="n"><b>3</b></td><td><b>Take the passes one by one</b>, the one facing the strongest neighbour first. Garrison each one.</td><td>Held passes are what make the province safe</td></tr>
+      <tr><td class="n"><b>4</b></td><td><b>Holy sites, one of each type:</b> building and research altars, XP and gathering sanctums</td><td>Same-type buffs don't stack</td></tr>
+      <tr><td class="n"><b>5</b></td><td><b>Fill the rest with flags</b> as our flag limit grows</td><td>Full +25% gathering coverage</td></tr>
+      <tr><td class="n"><b>6</b></td><td><b>Non-aggression pact with the top 1–2 alliances</b> before we finish</td><td>It reads as settling, not a challenge</td></tr>
+    </table></div>
+
+    <div class="panel warn" style="margin-top:14px"><div class="lbl">Not yet if…</div><ul>
+      <li>We have fewer than about 15–20 truly active members.</li>
+      <li>The province borders the top alliance.</li>
+      <li>It has more passes than we can garrison in every timezone.</li>
+    </ul><p class="small" style="margin:8px 0 0">In those cases, hold a tight core and the most dangerous pass now, and grow into the full province later.</p></div>
+
+    <h4 style="margin-top:22px">Defending a province with several passes</h4>
+    <div class="tbl"><table>
+      <tr><th>Step</th><th>What we do</th><th>Why</th></tr>
+      <tr><td class="n"><b>1</b></td><td><b>Map every pass:</b> which alliance sits behind it, their power and attitude. Mark each pass as <b>threat</b> or <b>quiet</b>.</td><td>We defend where danger is, not everywhere equally</td></tr>
+      <tr><td class="n"><b>2</b></td><td><b>Diplomacy on quiet passes:</b> a non-aggression pact with the neighbour behind each one.</td><td>Turns several fronts into one</td></tr>
+      <tr><td class="n"><b>3</b></td><td><b>Strongest garrison on the threat pass:</b> best defensive commanders, full troops, refilled after every attack.</td><td>This is where attacks will come</td></tr>
+      <tr><td class="n"><b>4</b></td><td><b>Link every held pass to our territory with flags.</b></td><td>Lets us reinforce fast and blocks enemy teleports along the border</td></tr>
+      <tr><td class="n"><b>5</b></td><td><b>Pass captains per timezone</b> (EU / US / Asia) keep garrisons full and call for help.</td><td>Passes fall when nobody is online</td></tr>
+      <tr><td class="n"><b>6</b></td><td><b>Cities in the centre, farms deepest inside.</b> Nobody settles next to a pass.</td><td>An enemy who breaks a pass finds no easy targets</td></tr>
+      <tr><td class="n"><b>7</b></td><td><b>Early warning:</b> anyone who spots enemies massing near a pass posts in #rally-calls. Nearby members shield up or reinforce.</td><td>Minutes of warning save whole armies</td></tr>
+      <tr><td class="n"><b>8</b></td><td><b>Fallback plan:</b> if a pass falls, pull back to the core, retake it with a rally when the enemy leaves.</td><td>We give up edges, never the centre</td></tr>
+    </table></div>
+
+    <h3 id="s-conquest">Conquest plan</h3>
+    <div class="stages">
+      <div class="stage"><div class="when">Weeks 1–6</div><h4>Grow quietly</h4><ul><li>Province with the fewest passes</li><li>Non-aggression pact with the top 1–2 alliances</li><li>Local altars and sanctums</li></ul></div>
+      <div class="stage"><div class="when">Weeks 6–12</div><h4>Lock the region</h4><ul><li>Hold all our passes</li><li>One of every nearby site type</li><li>Radiance + War shrines</li><li>Absorb dying alliances</li></ul></div>
+      <div class="stage"><div class="when">≈ Weeks 12–14</div><h4>The Temple</h4><ul><li>Fight only if we can hold 7 days</li><li>Otherwise trade for titles and a site split</li></ul></div>
+      <div class="stage"><div class="when">Week 14+ · KvK</div><h4>One kingdom</h4><ul><li>Internal wars stop</li><li>Coordinate with every alliance</li></ul></div>
+    </div>
+    <div class="panel" style="margin-top:14px"><div class="lbl">Fighting rules</div><ul>
+      <li><b>Rally discipline:</b> the best-built leader starts it, everyone fills, no solo hits on garrisons.</li>
+      <li><b>Shields:</b> anyone going offline during a war shields up.</li>
+      <li><b>Hospital:</b> never overfill it. Overflow troops die.</li>
+      <li><b>Farms first</b> in big fights.</li>
+      <li><b>One caller:</b> the War R4 calls targets in voice.</li>
+    </ul></div>
+
+    <h3 id="s-kvk">KvK</h3>
+    <div class="tbl"><table>
+      <tr><th>When</th><th>Who</th><th>What</th></tr>
+      <tr><td>3–4 weeks before</td><td>Mains</td><td>City Hall 16+, save healing gold and speedups, craft gear</td></tr>
+      <tr><td>2 weeks before</td><td>Farms</td><td>City Hall 16 so they can enter and soak losses</td></tr>
+      <tr><td>Eve of Crusade</td><td>Alliance</td><td>Complete it to unlock the Lost Kingdom</td></tr>
+      <tr><td>Inside the Lost Kingdom</td><td>Alliance</td><td>Build fortresses. Expand with crusader flags, the only way to grow territory there. Farms hunt level 25+ barbarians.</td></tr>
+      <tr><td>Season of Conquest</td><td>Mains</td><td>City Hall 25, crystal tech, Trial of Kau Karuak</td></tr>
+    </table></div>
+    <p class="tip">The first KvK opens around kingdom day 100 (week 14), with the next season about two months later.</p>
+
+    <h3 id="s-discord">Discord</h3>
+    <div class="grid g4">
+      <div class="panel"><div class="lbl">Info</div><div class="chan"><span>#welcome</span><br><span>#rules</span><br><span>#announcements</span><br><span>#codex</span><br><span>#codes</span></div></div>
+      <div class="panel"><div class="lbl">Operations</div><div class="chan"><span>#daily-checklist</span><br><span>#events</span><br><span>#rally-calls</span><br><span>#war-room</span><br><span>#ark-signup</span><br><span>#farm-transfers</span><br><span>#mge-plan</span></div></div>
+      <div class="panel"><div class="lbl">Community</div><div class="chan"><span>#general</span><br><span>#recruitment</span><br><span>#help-me-grow</span><br><span>#screenshots</span></div></div>
+      <div class="panel"><div class="lbl">Voice &amp; roles</div><div class="chan">Voice: War Room, Ark, Lounge<br>Roles: R5 · R4 · R3 · Member · Farm · Recruit<br>Timezones: EU · US · Asia</div></div>
+    </div>
+
+    <details class="treasury"><summary><span class="coin">💰</span>Treasury · if members spend<span class="chev">▸</span></summary><div class="body"><ul>
+      <li><b>Alliance gift packs</b> give gifts to the whole alliance. The best value for the group.</li>
+      <li>Spenders take the rally and garrison roles. F2P members fill.</li>
+      <li>Never pressure anyone to spend. This alliance is F2P-friendly.</li>
+    </ul></div></details>
+  </section>
+
+  <!-- ================= 08 ================= -->
+  <section class="ch" id="lotus">
+    <div class="banner"><div class="seal">08</div><div><h2>Hidden Lotus</h2><p><b>Optional goal, week 1 only.</b> 1.5M power within the first 7 days of a brand-new account. Hard as F2P, doable with constant activity and farms shipping from day 1.</p></div></div>
+
+    <h3 id="s-lotusplan">The 7-day plan (week 1)</h3>
+    <div class="tbl"><table>
+      <tr><th>Day</th><th>Power target</th><th>What to do</th></tr>
+      <tr><td class="n"><b>1</b></td><td class="n">80k – 120k</td><td>Rush City Hall. Unlock core buildings. Scout villages and caves. Join the alliance and teleport. Farms start gathering and shipping.</td></tr>
+      <tr><td class="n"><b>2</b></td><td class="n">200k – 300k</td><td>Economy and military buildings up. Train nonstop. Research never idle. Barbarians for commander levels.</td></tr>
+      <tr><td class="n"><b>3</b></td><td class="n">400k – 600k</td><td>Push Academy research. Barbarians and guardians nonstop.</td></tr>
+      <tr><td class="n"><b>4–5</b></td><td class="n">0.8M – 1.1M</td><td>Speedups on good power-per-cost buildings: hospitals, barracks, resource buildings. Keep training and gathering.</td></tr>
+      <tr><td class="n"><b>6</b></td><td class="n">1.2M – 1.4M</td><td><b>Set up the push.</b> No speedups on small upgrades. Start big upgrades to finish instantly on day 7. Stockpile food, wood and stone from the farms.</td></tr>
+      <tr><td class="n"><b>7</b></td><td class="n"><b>1.5M</b></td><td>Every saved speedup: City Hall and big buildings, then research, then training. Level commanders with tomes. Finish every small upgrade.</td></tr>
+    </table></div>
+
+    <h3 id="s-lotustips">Tips</h3>
+    <div class="grid g2">
+      <div class="panel"><div class="lbl">Where power comes from</div><ol>
+        <li><b>Buildings + research</b>: the biggest source. City Hall above all.</li>
+        <li><b>Troop training</b>: fills the gaps, especially on day 7.</li>
+        <li><b>Commander levels and skills</b>: smaller, but adds up.</li>
+      </ol><p class="tip">Aim for City Hall 16–17 by day 6–7.</p></div>
+      <div class="panel"><div class="lbl">Habits</div><ul class="tips">
+        <li>Builder, Academy and barracks run 24/7. Set phone alarms.</li>
+        <li>Alliance help on every timer.</li>
+        <li>Both farms send everything to the main on days 5–7.</li>
+        <li>Don't fight. Lost troops are lost power.</li>
+        <li>Short on day 7? Train the cheapest troops in bulk.</li>
+      </ul></div>
+    </div>
+
+    <details class="treasury"><summary><span class="coin">💰</span>Treasury · for low &amp; budget spenders<span class="chev">▸</span></summary><div class="body">
+      <p><b>First-purchase pack + one early growth or builder pack</b> makes Lotus easy. The first 7 days are the best-value spending window in the game.</p>
+    </div></details>
+    <footer>
+      <p>[Alliance Name] · Kingdom [#] · meta reviewed 11 October 2026.</p>
+      <p class="disc">Fan-made alliance guide. Not affiliated with or endorsed by Lilith Games. Rise of Kingdoms is a trademark of its owner.</p>
+      <p>Sources:
+        <a href="https://riseofkingdomsguides.com/rise-of-kingdoms-beginners-guide-tips-tricks-2020/" target="_blank" rel="noopener">Beginner guide</a> ·
+        <a href="https://www.lootbar.com/blog/en/rise-of-kingdoms-hidden-lotus-skin-f2p.html" target="_blank" rel="noopener">Hidden Lotus</a> ·
+        <a href="https://riseofkingdomsguides.com/the-mightiest-governor-event/" target="_blank" rel="noopener">Mightiest Governor</a> ·
+        <a href="https://riseofkingdomsguides.com/ark-of-osiris-guide-and-strategy/" target="_blank" rel="noopener">Ark of Osiris</a> ·
+        <a href="https://riseofkingdoms.fandom.com/wiki/Holy_Sites" target="_blank" rel="noopener">Holy Sites</a> ·
+        <a href="https://riseofkingdomsguides.com/farming-gathering-guide/" target="_blank" rel="noopener">Gathering</a> ·
+        <a href="https://riseofkingdomsguides.com/best-gathering-commanders-in-rok/" target="_blank" rel="noopener">Gathering commanders</a> ·
+        <a href="https://mobi.gg/en/tips/rise-of-kingdoms-best-commanders/" target="_blank" rel="noopener">Tier list</a> ·
+        <a href="https://www.ldshop.gg/blog/rise-of-kingdoms/rise-of-kingdoms-commander-tier-list.html" target="_blank" rel="noopener">Gold heads</a> ·
+        <a href="https://riseofkingdomshandbook.com/guides/riseofkingdoms-prime-commanders-guide" target="_blank" rel="noopener">Prime commanders</a> ·
+        <a href="https://theriagames.com/guide/rise-of-kingdoms-pelagius-commander-guide/" target="_blank" rel="noopener">Pelagius</a> ·
+        <a href="https://www.ldshop.gg/blog/rise-of-kingdoms/best-commander-pairings.html" target="_blank" rel="noopener">Pairings</a> ·
+        <a href="https://riseofkingdomsguides.com/bjorn-ironside-talent-tree-builds-and-pairs/" target="_blank" rel="noopener">Bjorn</a> ·
+        <a href="https://discover.hubpages.com/games-hobbies/Rise-of-Kingdoms-Best-Commanders-for-F2P-Players-to-Invest" target="_blank" rel="noopener">Sculpture costs</a> ·
+        <a href="https://www.gurugamer.ru/en/articles/riseofkingdoms-poleznye-sovety.html" target="_blank" rel="noopener">Tips</a> ·
+        <a href="https://riseofkingdoms.fandom.com/wiki/Lost_Kingdom" target="_blank" rel="noopener">Lost Kingdom</a> ·
+        <a href="https://riseofkingdomsguides.com/rise-of-kingdoms-equipment-guide/" target="_blank" rel="noopener">Equipment sets</a> ·
+        <a href="https://www.ldshop.gg/blog/rise-of-kingdoms/rok-equipment-guide.html" target="_blank" rel="noopener">Equipment by march</a> ·
+        <a href="https://www.lootbar.com/blog/en/ultimate-archer-equipment-guide-early-endgame.html" target="_blank" rel="noopener">Archer gear</a> ·
+        <a href="https://riseofkingdomsguides.com/formations-armaments-and-inscriptions-guide-rok/" target="_blank" rel="noopener">Formations</a> ·
+        <a href="https://www.topuplive.com/news/rise-of-kingdoms-alliance-technology-guide.html" target="_blank" rel="noopener">Alliance tech</a> ·
+        <a href="https://riseofkingdoms.fandom.com/wiki/Buildings/City_Hall/Requirements" target="_blank" rel="noopener">City Hall requirements</a> ·
+        <a href="https://riseofkingdomsguides.com/talent-tree/sun-tzu/" target="_blank" rel="noopener">Sun Tzu</a> ·
+        <a href="https://riseofkingdomsguides.com/talent-tree/boudica/" target="_blank" rel="noopener">Boudica</a> ·
+        <a href="https://riseofkingdomsguides.com/talent-tree/baibars/" target="_blank" rel="noopener">Baibars</a> ·
+        <a href="https://riseofkingdomsguides.com/?p=4090" target="_blank" rel="noopener">Belisarius</a> ·
+        <a href="https://riseofkingdomsguides.com/talent-tree/aethelflaed/" target="_blank" rel="noopener">Aethelflaed</a> ·
+        <a href="https://www.allclash.com/best-yi-seong-gye-ysg-builds-talent-tree-skill-order-best-pairing-in-rise-of-kingdoms/" target="_blank" rel="noopener">YSG</a> ·
+        <a href="https://www.allclash.com/?p=10847" target="_blank" rel="noopener">Pelagius build</a>
+      </p>
+    </footer>
+  </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var body = document.body;
+  var btn = document.getElementById('menuBtn');
+  function setNav(open){ body.classList.toggle('navopen', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+  btn.addEventListener('click', function(){ setNav(!body.classList.contains('navopen')); });
+  document.getElementById('scrim').addEventListener('click', function(){ setNav(false); });
+  document.querySelectorAll('#nav a').forEach(function(a){ a.addEventListener('click', function(){ setNav(false); }); });
+
+  // Active chapter + section in the sidebar
+  var chs = {}; document.querySelectorAll('.navch').forEach(function(n){ chs[n.getAttribute('data-ch')] = n; });
+  var subs = {}; document.querySelectorAll('.navsub a').forEach(function(a){ subs[a.getAttribute('href').slice(1)] = a; });
+  function markCh(id){
+    Object.keys(chs).forEach(function(k){ chs[k].classList.toggle('on', k === id); });
+  }
+  function markSub(id){
+    Object.keys(subs).forEach(function(k){ subs[k].classList.toggle('on', k === id); });
+  }
+  markCh('goal');
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) markCh(e.target.id); }); }, {rootMargin:'-35% 0px -60% 0px'});
+    document.querySelectorAll('section.ch').forEach(function(s){ io.observe(s); });
+    var io2 = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) markSub(e.target.id); }); }, {rootMargin:'-20% 0px -70% 0px'});
+    document.querySelectorAll('h3[id]').forEach(function(h){ io2.observe(h); });
+  }
+
+  // Treasury toggle
+  var t = document.getElementById('toggleSpend');
+  t.addEventListener('click', function(){
+    var all = document.querySelectorAll('details.treasury');
+    var anyClosed = Array.prototype.some.call(all, function(d){ return !d.open; });
+    all.forEach(function(d){ d.open = anyClosed; });
+    t.textContent = anyClosed ? 'Close every Treasury' : 'Open every Treasury';
+  });
+
+  // Daily checklist (this browser only, resets daily)
+  var KEY = 'rok-daily', today = new Date().toISOString().slice(0,10), state = {};
+  try{ var p = JSON.parse(localStorage.getItem(KEY) || 'null'); if (p && p.day === today) state = p.ticks || {}; }catch(_){}
+  var boxes = document.querySelectorAll('#daily input[type=checkbox]');
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify({day:today, ticks:state})); }catch(_){} }
+  boxes.forEach(function(b){ b.checked = !!state[b.id]; b.addEventListener('change', function(){ state[b.id] = b.checked; save(); }); });
+  document.getElementById('clearDaily').addEventListener('click', function(){ state = {}; boxes.forEach(function(b){ b.checked = false; }); save(); });
+})();
+</script>
+</body>
+</html>
